@@ -1,0 +1,106 @@
+import styled from "styled-components";
+
+export const Label = styled.label`
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  font-family: "Roboto", sans-serif;
+`;
+
+export const FieldIcon = styled.div`
+margin-right: 1rem;
+
+  svg {
+    font-size: 1.5rem;
+    color: silver;
+  }
+`;
+
+
+export const Error = styled.small`
+  margin-top: 0.5rem;
+  color: rgb(255 136 109);
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  display: block;
+  animation: flex 0.15s ease-in forwards;
+  overflow: hidden;
+  height: 0; 
+
+  @keyframes flex {
+    from {
+      height: 0x;
+    } to {
+      height: 1rem;
+    }
+  }
+`;
+
+
+export const InputGroup = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  border-bottom: 1px solid #8b8b8b;
+  padding-bottom: 0.2rem;
+  width: 100%;
+  position: relative;
+
+  &::after, &::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    height: 2px;
+    transition: transform 0.3s ease, width 0.6s ease;
+  }
+
+  &::after {
+    background: #ff8484;
+    width: 0;
+  }
+
+  &::before {
+    background: silver;
+    width: 100%;
+    transform: scaleX(0);
+  }
+
+  &.error {
+    &::after {
+      width: 100%;
+    }
+  }
+
+  &.focus {
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+`;
+
+
+export const ColorHeading = styled.h1`
+  background-image: linear-gradient(45deg, #6ea0ff, #b4ceff);
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  &.blue {
+    background-image: linear-gradient(45deg, #6ea0ff, #b4ceff);
+  }
+
+  &.violet {
+    background-image: linear-gradient(45deg, rgb(190, 157, 255), rgb(211 162 255 / 96%));
+  }
+
+  &.orange {
+    background-image: linear-gradient(45deg, rgb(255, 150, 110), rgb(255 110 110));
+  }
+
+  &.green {
+    background-image: linear-gradient(45deg, rgb(110 255 175), rgb(110 255 188 / 32%));
+  }
+`
