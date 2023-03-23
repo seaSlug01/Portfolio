@@ -26,8 +26,6 @@ function Carousel({images, isSmall, color, lazyLoad}) {
 
     let targetImageIndex = direction === "next" ? currentImageIndex + 1 : currentImageIndex - 1;
 
-    console.log("target imageIndex", targetImageIndex)
-
     if(targetImageIndex > images.length - 1 || targetImageIndex < 0) {
       targetImageIndex = direction === "next" ? 0 : images.length - 1;
     }
@@ -48,8 +46,6 @@ function Carousel({images, isSmall, color, lazyLoad}) {
     if(Object.keys(previousSelectedImage).length) return;
     const currentImageIndex = images.findIndex(img => img.src[imageSize] === selectedImage.src);
 
-    console.log("current image index", currentImageIndex);
-
     const {direction, targetImageIndex} = callback(e, currentImageIndex);
     imageAnimation(direction, targetImageIndex);
   }
@@ -64,7 +60,6 @@ function Carousel({images, isSmall, color, lazyLoad}) {
       animation: `${direction === "next" ? "slideRight" : "slideLeft"} 0.75s ease forwards`
     };
 
-    console.log(targetImageIndex)
     setPreviousSelectedImage({...selectedImage, styles: prevStyles})
 
     const currentSelectedImage = images[targetImageIndex];

@@ -65,15 +65,12 @@ function Slider() {
   })
   const ref = useRef();
 
-  console.log(slider.totalTurns)
-
 
   useEffect(() => {
     getMedia(setSlider, slider)
     const resizer = throttle(() => getMedia(setSlider, slider), 250);
     const unsub = window.addEventListener("resize", resizer)
 
-    console.log(slider)
     return () => {
       window.removeEventListener("resize", unsub)
     }

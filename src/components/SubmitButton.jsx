@@ -9,8 +9,6 @@ function SubmitButton({text, icon, ...restProps}) {
     y: null
   })
 
-
-
   useEffect(() => {
     let localRef = null;
 
@@ -18,7 +16,6 @@ function SubmitButton({text, icon, ...restProps}) {
 
     const clipIt = throttle((e) => {
       var rect = e.target.getBoundingClientRect();
-      console.log(rect)
       setCursorPosition({
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
