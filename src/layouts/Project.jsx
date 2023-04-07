@@ -266,7 +266,7 @@ const scaleUp = (top, left, scale) => keyframes`
 const Controls = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 2rem;
+  margin-top: 8rem;
 
   svg {
     font-size: 1rem;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {togglePortal} from "../store/portalSlice";
 import {setSelectedProject} from "../store/projectsSlice";
@@ -17,12 +17,6 @@ function Wheel() {
   const lastBatchLength = totalItems % 4 === 0 ? 4 : totalItems % 4;
   const [animated, setAnimated] = useState(true);
   const [allowClick, setAllowClick] = useState(true);
-
-  
-  // useInterval(() => {
-  //   rotateWheel();
-  // }, 4000)
- 
 
   const [rotationDegrees, setRotationDegrees] = useState(0);
   const [currentBatch, setCurrentBatch] = useState({

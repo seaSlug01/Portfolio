@@ -60,6 +60,10 @@ img {
   font-weight: bold !important;
 }
 
+.mb-5 {
+  margin-bottom: 5rem !important;
+}
+
 `;
 
 export default GlobalStyle;
