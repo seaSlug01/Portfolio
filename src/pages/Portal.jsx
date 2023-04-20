@@ -76,15 +76,6 @@ const Container = styled.div`
     }
   }
 
-  @media (max-width: 775px) {
-    ${CloseIcon} {
-      top: 0.5rem;
-      left: 0.5rem;
-      z-index: 100;
-    }
-
-  }
-
   
   @media (max-width: 600px) {
     background: rgb(50 50 50);

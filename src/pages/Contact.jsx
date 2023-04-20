@@ -112,6 +112,7 @@ const Container = styled.div`
     transform: translate(-50%, -50%);
     height: auto;
     padding-block: 5rem;
+    margin-top: 5rem;
 
     ${Header} {
       font-size: 2.5rem;
