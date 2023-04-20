@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ContactForm from '../layouts/ContactForm';
 
 function Contact(props) {
-  const isModal = useSelector(state => state.portal.component?.toLowerCase() === "contact")
+  const isModal = useSelector(state => state.portal.component?.toLowerCase() === "contact");
   return (
     <Container {...props} className={isModal ? "portal-form" : undefined}>
       <Header>
@@ -113,6 +113,16 @@ const Container = styled.div`
     height: auto;
     padding-block: 5rem;
     margin-top: 5rem;
+
+    @media (max-width: 700px) {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: none;
+      height: 100%;
+      width: 100%;
+      margin-top: 0;
+    }
 
     ${Header} {
       font-size: 2.5rem;

@@ -30,7 +30,7 @@ function Portal() {
     if(component) {
       const SelectedComponent = modalTargetComponents[component];
 
-      return <SelectedComponent closePortal={closePortal} cordinates={cordinates} {...portal} onMouseDown={e => e.stopPropagation()}/>
+      return <SelectedComponent closePortal={closePortal} className="portal-content" cordinates={cordinates} {...portal} onMouseDown={e => e.stopPropagation()}/>
     }
   }
 
@@ -78,7 +78,8 @@ const Container = styled.div`
 
   
   @media (max-width: 600px) {
-    background: rgb(50 50 50);
+    background: rgba(50 50 50, 0.5);
+    backdrop-filter: blur(2px);
     & > div {
       padding: 0.5rem;
       width: 100%;

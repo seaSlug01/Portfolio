@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 
 // sizes: large, medium, tablet, phone
-const imageSizes = { 
+const imageSizes = {
   4: "large",
   3: "medium",
   2: "medium",
