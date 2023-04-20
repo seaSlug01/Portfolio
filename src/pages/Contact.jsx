@@ -114,7 +114,7 @@ const Container = styled.div`
     padding-block: 5rem;
 
     ${Header} {
-      font-size: 3rem;
+      font-size: 2.5rem;
     }
   }
 

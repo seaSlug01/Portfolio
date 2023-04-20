@@ -247,6 +247,7 @@ export const projects = [
       src: {
         large: imgPath("msg-1.jpg"),
         medium: imgPath("msg-1.jpg"),
+        small: imgPath("msg-1.jpg"),
         preview: imgPath("msg-1.jpg"),
       },
       type: "contain"
@@ -255,6 +256,7 @@ export const projects = [
       src: {
         large: imgPath("msg-7.jpg"),
         medium: imgPath("msg-7.jpg"),
+        small: imgPath("msg-7.jpg"),
         preview: imgPath("msg-7.jpg"),
       },
       type: "contain"
@@ -263,6 +265,7 @@ export const projects = [
       src: {
         large: imgPath("msg-2.jpg"),
         medium: imgPath("msg-2.jpg"),
+        small: imgPath("msg-2.jpg"),
         preview: imgPath("msg-2.jpg"),
       },
       type: "contain"
@@ -271,6 +274,7 @@ export const projects = [
       src: {
         large: imgPath("msg-3.jpg"),
         medium: imgPath("msg-3.jpg"),
+        small: imgPath("msg-3.jpg"),
         preview: imgPath("msg-3.jpg"),
       },
       type: "contain"
@@ -279,6 +283,7 @@ export const projects = [
       src: {
         large: imgPath("msg-4.jpg"),
         medium: imgPath("msg-4.jpg"),
+        small: imgPath("msg-4.jpg"),
         preview: imgPath("msg-4.jpg"),
       },
       type: "contain"
@@ -287,6 +292,7 @@ export const projects = [
       src: {
         large: imgPath("msg-5.jpg"),
         medium: imgPath("msg-5.jpg"),
+        small: imgPath("msg-5.jpg"),
         preview: imgPath("msg-5.jpg"),
       },
       type: "contain"
@@ -295,6 +301,7 @@ export const projects = [
       src: {
         large: imgPath("msg-6.jpg"),
         medium: imgPath("msg-6.jpg"),
+        small: imgPath("msg-6.jpg"),
         preview: imgPath("msg-6.jpg"),
       },
       type: "contain"
@@ -349,6 +356,7 @@ export const projects = [
       src: {
         large: imgPath("1-small.jpg"),
         medium: imgPath("1-small.jpg"),
+        small: imgPath("1-small.jpg"),
         preview: imgPath("1-small.jpg")
       },
       type: "cover"
@@ -357,6 +365,7 @@ export const projects = [
       src: {
         large: imgPath("2-small.jpg"),
         medium: imgPath("2-small.jpg"),
+        small: imgPath("2-small.jpg"),
         preview: imgPath("2-small.jpg"),
       },
       type: "cover"
@@ -365,6 +374,7 @@ export const projects = [
       src: {
         large: imgPath("3-small.jpg"),
         medium: imgPath("3-small.jpg"),
+        small: imgPath("3-small.jpg"),
         preview: imgPath("3-small.jpg"),
       },
       type: "cover"
@@ -373,6 +383,7 @@ export const projects = [
       src: {
         large: imgPath("4-small.jpg"),
         medium: imgPath("4-small.jpg"),
+        small: imgPath("4-small.jpg"),
         preview: imgPath("4-small.jpg"),
       },
       type: "cover"
@@ -381,6 +392,7 @@ export const projects = [
       src: {
         large: imgPath("5-small.jpg"),
         medium: imgPath("5-small.jpg"),
+        small: imgPath("5-small.jpg"),
         preview: imgPath("5-small.jpg"),
       },
       type: "cover"
@@ -389,6 +401,7 @@ export const projects = [
       src: {
         large: imgPath("6-small.jpg"),
         medium: imgPath("6-small.jpg"),
+        small: imgPath("6-small.jpg"),
         preview: imgPath("6-small.jpg"),
       },
       type: "cover"
@@ -397,6 +410,7 @@ export const projects = [
       src: {
         large: imgPath("7-small.jpg"),
         medium: imgPath("7-small.jpg"),
+        small: imgPath("7-small.jpg"),
         preview: imgPath("7-small.jpg"),
       },
       type: "cover"
@@ -419,6 +433,7 @@ export const projects = [
       src: {
         large: imgPath("2-small.jpg"),
         medium: imgPath("2-small.jpg"),
+        small: imgPath("2-small.jpg"),
         preview: imgPath("2-small.jpg"),
       },
       type: "cover"
@@ -427,6 +442,7 @@ export const projects = [
       src: {
         large: imgPath("msg-1.jpg"),
         medium: imgPath("msg-1.jpg"),
+        small: imgPath("msg-1.jpg"),
         preview: imgPath("msg-1.jpg"),
       },
       type: "cover"
@@ -435,6 +451,7 @@ export const projects = [
       src: {
         large: imgPath("3-small.jpg"),
         medium: imgPath("3-small.jpg"),
+        small: imgPath("3-small.jpg"),
         preview: imgPath("3-small.jpg"),
       },
       type: "cover"
@@ -443,6 +460,7 @@ export const projects = [
       src: {
         large: imgPath("4-small.jpg"),
         medium: imgPath("4-small.jpg"),
+        small: imgPath("4-small.jpg"),
         preview: imgPath("4-small.jpg"),
       },
       type: "cover"
@@ -451,6 +469,7 @@ export const projects = [
       src: {
         large: imgPath("5-small.jpg"),
         medium: imgPath("5-small.jpg"),
+        small: imgPath("5-small.jpg"),
         preview: imgPath("5-small.jpg"),
       },
       type: "cover"
@@ -459,6 +478,7 @@ export const projects = [
       src: {
         large: imgPath("6-small.jpg"),
         medium: imgPath("6-small.jpg"),
+        small: imgPath("6-small.jpg"),
         preview: imgPath("6-small.jpg"),
       },
       type: "cover"
@@ -467,6 +487,7 @@ export const projects = [
       src: {
         large: imgPath("7-small.jpg"),
         medium: imgPath("7-small.jpg"),
+        small: imgPath("7-small.jpg"),
         preview: imgPath("7-small.jpg"),
       },
       type: "cover"
@@ -485,6 +506,7 @@ export const projects = [
       src: {
         large: imgPath("3-small.jpg"),
         medium: imgPath("3-small.jpg"),
+        small: imgPath("3-small.jpg"),
         preview: imgPath("3-small.jpg"),
       },
       type: "cover"
@@ -493,6 +515,7 @@ export const projects = [
       src: {
         large: imgPath("1-small.jpg"),
         medium: imgPath("1-small.jpg"),
+        small: imgPath("1-small.jpg"),
         preview: imgPath("1-small.jpg"),
       },
       type: "cover"
@@ -501,6 +524,7 @@ export const projects = [
       src: {
         large: imgPath("2-small.jpg"),
         medium: imgPath("2-small.jpg"),
+        small: imgPath("2-small.jpg"),
         preview: imgPath("2-small.jpg"),
       },
       type: "cover"
@@ -509,6 +533,7 @@ export const projects = [
       src: {
         large: imgPath("4-small.jpg"),
         medium: imgPath("4-small.jpg"),
+        small: imgPath("4-small.jpg"),
         preview: imgPath("4-small.jpg"),
       },
       type: "cover"
@@ -517,6 +542,7 @@ export const projects = [
       src: {
         large: imgPath("5-small.jpg"),
         medium: imgPath("5-small.jpg"),
+        small: imgPath("5-small.jpg"),
         preview: imgPath("5-small.jpg"),
       },
       type: "cover"
@@ -525,6 +551,7 @@ export const projects = [
       src: {
         large: imgPath("6-small.jpg"),
         medium: imgPath("6-small.jpg"),
+        small: imgPath("6-small.jpg"),
         preview: imgPath("6-small.jpg"),
       },
       type: "cover"
@@ -533,6 +560,7 @@ export const projects = [
       src: {
         large: imgPath("7-small.jpg"),
         medium: imgPath("7-small.jpg"),
+        small: imgPath("7-small.jpg"),
         preview: imgPath("7-small.jpg"),
       },
       type: "cover"
@@ -551,6 +579,7 @@ export const projects = [
       src: {
         large: imgPath("4-small.jpg"),
         medium: imgPath("4-small.jpg"),
+        small: imgPath("4-small.jpg"),
         preview: imgPath("4-small.jpg"),
       },
       type: "cover"
@@ -559,6 +588,7 @@ export const projects = [
       src: {
         large: imgPath("1-small.jpg"),
         medium: imgPath("1-small.jpg"),
+        small: imgPath("1-small.jpg"),
         preview: imgPath("1-small.jpg"),
       },
       type: "cover"
@@ -567,6 +597,7 @@ export const projects = [
       src: {
         large: imgPath("2-small.jpg"),
         medium: imgPath("2-small.jpg"),
+        small: imgPath("2-small.jpg"),
         preview: imgPath("2-small.jpg"),
       },
       type: "cover"
@@ -575,6 +606,7 @@ export const projects = [
       src: {
         large: imgPath("3-small.jpg"),
         medium: imgPath("3-small.jpg"),
+        small: imgPath("3-small.jpg"),
         preview: imgPath("3-small.jpg"),
       },
       type: "cover"
@@ -583,6 +615,7 @@ export const projects = [
       src: {
         large: imgPath("5-small.jpg"),
         medium: imgPath("5-small.jpg"),
+        small: imgPath("5-small.jpg"),
         preview: imgPath("5-small.jpg"),
       },
       type: "cover"
@@ -591,6 +624,7 @@ export const projects = [
       src: {
         large: imgPath("6-small.jpg"),
         medium: imgPath("6-small.jpg"),
+        small: imgPath("6-small.jpg"),
         preview:imgPath("6-small.jpg"),
       },
       type: "cover"
@@ -599,6 +633,7 @@ export const projects = [
       src: {
         large: imgPath("7-small.jpg"),
         medium: imgPath("7-small.jpg"),
+        small: imgPath("7-small.jpg"),
         preview: imgPath("7-small.jpg"),
       },
       type: "cover"

@@ -108,6 +108,15 @@ const Pointer = styled.div.attrs(props => ({
     -webkit-filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, .7));
     filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, .7));
   }
+
+  @media (max-width: 775px) {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    svg {
+      font-size: 1.5rem;
+    }
+  }
 `;
 
 const scaleUp = (top, left, scale) => keyframes`
