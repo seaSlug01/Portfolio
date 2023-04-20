@@ -154,4 +154,8 @@ const Form = styled.form`
   button[type="submit"] {
     margin-top: 2rem;
   }
+
+  @media (max-width: 775px) {
+    width: 100%;
+  }
 `;
