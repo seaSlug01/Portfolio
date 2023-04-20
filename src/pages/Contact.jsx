@@ -112,7 +112,7 @@ const Container = styled.div`
     transform: translate(-50%, -50%);
     height: auto;
     padding-block: 5rem;
-    margin-top: 5rem;
+    margin-top: 0;
 
     @media (max-width: 700px) {
       position: relative;
@@ -121,7 +121,6 @@ const Container = styled.div`
       transform: none;
       height: 100%;
       width: 100%;
-      margin-top: 0;
     }
 
     ${Header} {
