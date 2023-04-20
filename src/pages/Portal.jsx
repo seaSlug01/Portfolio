@@ -80,6 +80,7 @@ const Container = styled.div`
     ${CloseIcon} {
       top: 0.5rem;
       left: 0.5rem;
+      z-index: 100;
     }
 
   }
