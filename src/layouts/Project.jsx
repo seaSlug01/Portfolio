@@ -371,6 +371,10 @@ const Big = styled(ExtendedStyles)`
 
   .hr {
     margin-block: 10rem;
+
+    @media(max-width: 775px) {
+      margin-block: 5rem;
+    }
   }
 
   ${Wrapper} {
