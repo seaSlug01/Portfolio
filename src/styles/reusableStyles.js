@@ -13,14 +13,14 @@ margin-right: 1rem;
 
   svg {
     font-size: 1.5rem;
-    color: silver;
+    color: ${props => props.theme === "dark" ? "silver" : "#565656"};
   }
 `;
 
 
 export const Error = styled.small`
   margin-top: 0.5rem;
-  color: rgb(255 136 109);
+  color: ${props => props.theme === "dark" ? "rgb(255 136 109)" : "red"};
   font-weight: bold;
   letter-spacing: 1.5px;
   display: block;
@@ -62,7 +62,7 @@ export const InputGroup = styled.div`
   }
 
   &::before {
-    background: silver;
+    background: ${props => props.theme === "dark" ? "silver" : "#525252"};
     width: 100%;
     transform: scaleX(0);
   }
@@ -82,25 +82,25 @@ export const InputGroup = styled.div`
 
 
 export const ColorHeading = styled.h1`
-  background-image: linear-gradient(45deg, #6ea0ff, #b4ceff);
+  background-image: ${props => props.theme === "dark" ? "linear-gradient(45deg, #6ea0ff, #b4ceff)" : "linear-gradient(45deg, #6ea0ff, #6ea0ff)"};
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
   &.blue {
-    background-image: linear-gradient(45deg, #6ea0ff, #b4ceff);
+    background-image: ${props => props.theme === "dark" ? "linear-gradient(45deg, #6ea0ff, #b4ceff)" : "linear-gradient(45deg, #6ea0ff, #6ea0ff)"};
   }
 
   &.violet {
-    background-image: linear-gradient(45deg, rgb(190, 157, 255), rgb(211 162 255 / 96%));
+    background-image: ${props => props.theme === "dark" ? "linear-gradient(45deg, rgb(190, 157, 255), rgb(211 162 255 / 96%))" : "linear-gradient(45deg, rgb(190, 157, 255), rgb(190, 157, 255))"};
   }
 
   &.orange {
-    background-image: linear-gradient(45deg, rgb(255, 150, 110), rgb(255 110 110));
+    background-image: ${props => props.theme === "dark" ? "linear-gradient(45deg, rgb(255, 150, 110), rgb(255 110 110))" : "linear-gradient(45deg, rgb(255, 150, 110), rgb(255, 150, 110))"};
   }
 
   &.green {
-    background-image: linear-gradient(45deg, rgb(110 255 175), rgb(110 255 188 / 32%));
+    background-image: ${props => props.theme === "dark" ? "linear-gradient(45deg, rgb(110 255 175), rgb(110 255 188 / 32%))" : "linear-gradient(45deg, rgb(110 255 175), rgb(110 255 175))"};
   }
 `

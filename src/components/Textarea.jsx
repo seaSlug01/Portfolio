@@ -6,7 +6,7 @@ import { InputGroup, Label, FieldIcon as Icon, Error } from '../styles/reusableS
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import { setLetters } from "../utils/flyingLetters";
 
-function Textarea({name, label, error, touched, onBlur, onChange, ...restProps}) {
+function Textarea({name, label, error, touched, onBlur, onChange, theme, ...restProps}) {
   const dispatch = useDispatch();
   const textareaId = crypto.randomUUID();
   const [isFocused, setIsFocused] = useState(false);
@@ -23,7 +23,7 @@ function Textarea({name, label, error, touched, onBlur, onChange, ...restProps})
         <Icon>
           <HiOutlinePencilAlt />
         </Icon>
-        <TextareaField id={textareaId} name={name} placeholder="Your message" rows={1} onFocus={() => setIsFocused(true)}
+        <TextareaField id={textareaId} name={name} placeholder="Your message" rows={1} onFocus={() => setIsFocused(true)} theme={theme}
           onBlur={(e) => {
             onBlur(e)
             setIsFocused(false)
@@ -49,13 +49,13 @@ export default Textarea
 const TextareaField = styled.textarea`
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
-  color: #dbdbdb;
+  color: ;${props => props.theme === "dark" ? "#dbdbdb" : "#565656"};
   width: 100%;
   overflow:hidden;
   resize: none;
 
   &::placeholder {
-    color: rgb(163 163 163);
+    color: ${props => props.theme === "dark" ? "rgb(163 163 163)" : "#565656"};
   }
 `
 

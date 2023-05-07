@@ -35,7 +35,9 @@ function SubmitButton({text, icon, ...restProps}) {
     <Button
       ref={ref}
       clipCordinates={cursorPosition}
-      {...restProps}>
+      {...restProps}
+      
+      >
         <Text>
           {icon || undefined}
           {text || "Send"}</Text>

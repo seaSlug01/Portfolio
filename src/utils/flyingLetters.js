@@ -23,7 +23,6 @@ export function setLetterCordinates(e) {
   const rect = e.target.getBoundingClientRect();
   const minX = rect.left;
   const maxX = rect.left + rect.width;
-  console.log(rect);
   const startingPositionX = randomNumBetween(minX, maxX)
   const startingPositionY = rect.top - 10;
 

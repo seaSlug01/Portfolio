@@ -47,10 +47,8 @@ const FormFields = [
     }
 ]
 
-function ContactForm({isModal}) {
+function ContactForm({isModal, theme}) {
   const formRef = useRef();
-
-  console.log(isModal); 
 
   const [submitMessage, setSubmitMessage] = useState({
     message: "",
@@ -116,9 +114,9 @@ function ContactForm({isModal}) {
                     {submitMessage.message}
                   </SubmitMessage>
                 }
-                {!isModal ? <MyPhoneNumber /> : undefined}
+                {!isModal ? <MyPhoneNumber theme={theme} /> : undefined}
                 {FormFields.map(({Component, name, label, placeholder, icon }) => {
-                  return <Component key={name} name={name} label={label} placeholder={placeholder} value={values[name]} onBlur={handleBlur} onChange={handleChange} error={errors[name]} touched={touched[name]} icon={icon || undefined} />
+                  return <Component key={name} name={name} label={label} placeholder={placeholder} value={values[name]} onBlur={handleBlur} onChange={handleChange} error={errors[name]} touched={touched[name]} icon={icon || undefined} theme={theme} />
                 })}
                 <SubmitButton className={isModal ? "mb-5" : ""} type="submit" disabled={!(dirty && isValid) || isSubmitting} />
               </Form>

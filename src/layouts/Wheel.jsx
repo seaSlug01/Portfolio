@@ -9,7 +9,8 @@ import Card from '../components/Card';
 function Wheel() {
   const dispatch = useDispatch();
   const items = useSelector(state => state.projects.projectsData);
-  const {imageSize} = useSelector(state => state.mediaQuerySize)
+  const {imageSize} = useSelector(state => state.mediaQuerySize);
+  const theme = useSelector(state => state.theme.mode);
 
   const animationSpeed = 1000;
   const totalItems = items.length;
@@ -97,10 +98,10 @@ function Wheel() {
   };
 
   return (
-    <Container rotateDegress={rotationDegrees} animated={animated} animationSpeed={animationSpeed / 1000}>
+    <Container rotateDegress={rotationDegrees} animated={animated} animationSpeed={animationSpeed / 1000} theme={theme}>
       {
         currentBatch.batch.map(({id, images, heading, textFields}) => (
-          <Li key={id} onClick={(e) => {
+          <Li theme={theme} key={id} onClick={(e) => {
             if(e.target === e.currentTarget) {
               rotateWheel();
             }
@@ -111,7 +112,7 @@ function Wheel() {
               dispatch(setSelectedProject({id}))
               dispatch(togglePortal({show: true, component: "Project", cordinates: {left, top, width, height}}))
             }}>
-              <Card image={images[0].src[imageSize]} heading={heading} details={textFields[0]} />
+              <Card theme={theme} image={images[0].src[imageSize]} heading={heading} details={textFields[0]} />
             </Item>
           </Li>
         ))
@@ -135,8 +136,8 @@ const Li = styled.li`
   min-height: 21.5vw;
 
   &:nth-of-type(1) {
-    border-right: 1px solid white;
-    border-bottom: 1px solid white;
+    border-right: 1px solid ${props => props.theme === "dark" ? "white" : "black"};
+    border-bottom: 1px solid ${props => props.theme === "dark" ? "white" : "black"};
     top: 0;
     left: 0;
 
@@ -159,8 +160,8 @@ const Li = styled.li`
 
 
   &:nth-of-type(3) {
-    border-left: 1px solid white;
-    border-top: 1px solid white;
+    border-left: 1px solid ${props => props.theme === "dark" ? "white" : "black"};
+    border-top: 1px solid ${props => props.theme === "dark" ? "white" : "black"};
     transform: translate(100%, 100%);
 
     & ${Item} {
@@ -200,14 +201,14 @@ const Container = styled.ul`
   &::before {
     width: 95%;
     height: 95%;
-    border: 1px solid white;
+    border: 1px solid ${props => props.theme === "dark" ? "white" : "black"};
   }
 
   &::after {
     width: 3rem;
     height: 3rem;
-    outline: 1px solid white;
+    outline: 1px solid ${props => props.theme === "dark" ? "white" : "black"};
     outline-offset: 1rem;
-    background: white;
+    background: ${props => props.theme === "dark" ? "white" : "black"};
   }
 `;

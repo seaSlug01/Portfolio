@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Label, FieldIcon as Icon } from '../styles/reusableStyles';
 import {BsTelephoneForward} from "react-icons/bs";
 
-function MyPhoneNumber() {
+function MyPhoneNumber({theme}) {
   const [text, setText] = useState({
     str: `kidding...Just send me a message and try out this cute form. I will make sure to reach you :)`,
     show: false,
@@ -69,7 +69,7 @@ const Paragraph = styled.p`
   font-style: italic;
   font-size: 0.85rem;
   line-height: 1.3;
-  color: #d9d9d9;
+  color: ${props => props.theme === "dark" ? "#d9d9d9" : "black"};
   letter-spacing: 0.3px;
   margin-top: 0.1rem;
 
@@ -84,7 +84,7 @@ const Paragraph = styled.p`
     position: absolute;
     width: 90%;
     height: 100%;
-    background: linear-gradient(to right, rgba(50, 50, 50, 0.5) 0%, rgba(50, 50, 50, 1) 10%);
+    background: ${props => props.theme === "dark" ? "linear-gradient(to right, rgba(50, 50, 50, 0.5) 0%, rgba(50, 50, 50, 1) 10%)" : "linear-gradient(to right, rgba(249, 249, 249, 0.5) 0%, rgba(249, 249, 249, 1) 10%)"};
     top: 0;
     right: 0;
     display: block;

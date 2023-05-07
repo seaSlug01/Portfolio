@@ -5,8 +5,9 @@ import Logo from "../components/Logo.jsx";
 import Burger from '../components/Burger';
 import NavLinkArea from './NavLinkArea';
 import throttle from 'lodash.throttle';
+import Toggler from '../components/Toggler.jsx';
 
-function Header() {
+function Header({theme}) {
   const [navLinks, setNavLinks] = useState(false);
   const [navLine, setNavLine] = useState(true);
   const burgerRef = useRef(null);
@@ -38,18 +39,26 @@ function Header() {
 
   return (
     <>
-      <HeaderMain navLine={navLine}>
+      <HeaderMain navLine={navLine} theme={theme}>
         <Link to="/" className="logo">
           <Logo />
         </Link>
-        <NavLinkArea visible={navLinks} />
-        <Burger toggleNavLinks={toggleNavLinks} active={navLinks} ref={burgerRef} />
+        <NavLinkArea visible={navLinks} theme={theme} />
+        <NavActions>
+          <Toggler />
+          <Burger toggleNavLinks={toggleNavLinks} active={navLinks} ref={burgerRef} />
+        </NavActions>
       </HeaderMain>
     </>
   )
 }
 
 export default Header
+
+const NavActions = styled.div`
+  display: flex;
+  gap: 3rem;
+`;
 
 const HeaderMain = styled.div`
   width: 100%;
@@ -62,7 +71,7 @@ const HeaderMain = styled.div`
   top: 0;
   left: 0;
   z-index: 100;
-  background: rgba(50, 50, 50, 0.5);
+  background: ${props => props.theme === "dark" ? "rgba(50, 50, 50, 0.5)" : "rgba(249, 249, 249, 0.65)"};
   backdrop-filter: blur(5px);
 
   &::after {
@@ -80,8 +89,18 @@ const HeaderMain = styled.div`
   }
 
   .logo {
+    
+
     svg {
       width: 9rem;
+
+      g:nth-of-type(1) {
+        fill: ${props => props.theme === "dark" ? "#8bdbf5" : "rgb(58 108 163)"};
+      }
+
+      g:nth-of-type(2) {
+        fill: ${props => props.theme === "dark" ? "#f3f3f3" : "#404040"};
+      }
     }
   }
 

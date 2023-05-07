@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
 
 body {
   font-family: 'Roboto', sans-serif;
-  background: rgb(50 50 50);
+  background: ${props => props.theme === "dark" ? "rgb(50, 50, 50)" : "#f9f9f9"};
   /* background:  #242424; */
   color: white;
 }

@@ -12,20 +12,21 @@ function Hero() {
   const dispatch = useDispatch();
   const mediaSize = useSelector(state => state.mediaQuerySize.mediaSize)
   const projects = useSelector(state => state.projects.projectsData.slice(0, 3))
+  const theme = useSelector(state => state.theme.mode);
 
   return (
     <Section>
       <Square backgroundImage="/assets/3-small.jpg">
-        <Block>
-          <Title>
-            <h1>Neelixmans Area</h1>
+        <Block theme={theme}>
+          <Title theme={theme}>
+            <h1 className="">Neelixmans Area</h1>
           </Title>
           <p>Hi, I'm Neelix, a web developer enthousiast.</p>
           <p>This website is a representation of some of my works. Feel free to browse.</p>
           <SubmitButton text="Contact" className="btn-contact" icon={<BsFillPeopleFill />} onClick={() => dispatch(togglePortal({show: true, component: "Contact"}))} />
         </Block>
       </Square>
-      <Square>
+      <Square className={theme === "dark" ? "dark" : "light"}>
         {mediaSize < 4 ? 
           <>
             <Slider />
@@ -45,7 +46,7 @@ const Title = styled.div`
 
   h1 {
     font-size: 4.5rem;
-    color: #f3f3f3;
+    color: ${props => props.theme === "dark" ? "#f3f3f3" : "black"};
     margin-bottom: 1rem;
     letter-spacing: 3px;
     font-weight: 300;
@@ -62,11 +63,13 @@ const Title = styled.div`
     mix-blend-mode: darken;
     transform: translateY(80%);
     transition: 1s ease transform;
+    display: ${props => props.theme === "dark" ? "block" : "none"};
   }
 
   @media (max-width: 1488px) {
     
     h1 {
+      color: #f3f3f3;
       font-size: 4.5vw;
       margin-bottom: 0.9vw;
     }
@@ -91,10 +94,11 @@ const Block = styled.div`
   }
 
   p {
-    color: rgb(227 227 227);
+    color: ${props => props.theme === "dark" ? "rgb(227 227 227)" : "#4c4c4c"};
+    font-weight: ${props => props.theme === "dark" ? "400" : "500"};
 
     &:first-of-type {
-      line-height: 1.6;
+      line-height: 2;
     }
 
     span {
@@ -106,8 +110,8 @@ const Block = styled.div`
     margin-top: 3rem;
     width: 50%;
     text-transform: uppercase;
-    background: #e6e6e6;
-    box-shadow: 2px 10px 40px #646464;
+    background: ${props => props.theme === "dark" ? "#e6e6e6" : "black"};
+    box-shadow: ${props => props.theme === "dark" ? "#2px 10px 40px #646464" : "0 10px 40px #ababab"};
     
 
     span {
@@ -117,11 +121,11 @@ const Block = styled.div`
     }
 
     &:hover {
-      background: #eeeeee;
+      background: ${props => props.theme === "dark" ? "#eeeeee" : "black"};
     }
 
     &::after {
-      background: #181818;
+      background: ${props => props.theme === "dark" ? "#181818" : "#cbd3ff"};
     }
   }
 
@@ -132,8 +136,22 @@ const Block = styled.div`
       font-size: 0.9375rem;
     }
 
+    .btn-contact {
+      background: #e6e6e6;
+      box-shadow: #2px 10px 40px #646464;
+
+      &:hover {
+        background: #eeeeee;
+      }
+
+      &::after {
+        background: #181818;
+      }
+    }
+
     p {
       text-align: center;
+      color: rgb(227 227 227);
     }
 
     .btn-contact {
@@ -192,15 +210,31 @@ const Square = styled.div`
   &:nth-of-type(2) {
     align-items: center;
 
-
-    &::after, &::before {
-      content: "";
-      background-image: linear-gradient( to bottom, rgba(50, 50, 50, 0) 0,
+    &.dark {
+      &::after, &::before {
+        background-image: linear-gradient( to bottom, rgba(50, 50, 50, 0) 0,
         rgba(50, 50, 50, 0.15) 15%,
         rgba(50, 50, 50, 0.65) 29%,
         rgba(50, 50, 50, 0.78) 44%,
         rgba(50, 50, 50, 0.9) 44%,
         rgba(50, 50, 50, 1) 100% );
+      }
+    }
+
+    &.light {
+      &::after, &::before {
+        background-image: linear-gradient( to bottom, rgba(50, 50, 50, 0) 0,
+        rgba(249, 249, 249, 0.35) 15%,
+        rgba(249, 249, 249, 0.65) 29%,
+        rgba(249, 249, 249, 0.78) 44%,
+        rgba(249, 249, 249, 0.9) 44%,
+        rgba(249, 249, 249, 1) 100% );
+      }
+    }
+
+
+    &::after, &::before {
+      content: "";
       width: 100%;
       height: 3rem;
       position: absolute;

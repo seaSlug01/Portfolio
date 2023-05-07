@@ -4,9 +4,9 @@ import { NavLink } from 'react-router-dom';
 import {AiOutlineHome, AiOutlineExpand} from "react-icons/ai";
 import { MdAlternateEmail} from "react-icons/md";
 
-function NavLinkArea({visible}) {
+function NavLinkArea({visible, theme}) {
   return (
-    <Container visible={visible}>
+    <Container visible={visible} theme={theme}>
       <Block>
         <NavLink to="/"><AiOutlineHome />Home</NavLink>
         <NavLink to="/projects"><AiOutlineExpand />Projects</NavLink>
@@ -34,7 +34,8 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background: #f8f8f8;
+  background: ${props => props.theme === "dark" ? "#f8f8f8" : "rgb(38, 38, 38)"};
+  backdrop-filter: ${props => props.theme === "dark" ? "none" : "blur(4px)"};
   position: fixed;
   top: 0;
   right: 2rem;
@@ -43,14 +44,14 @@ const Container = styled.div`
   clip-path: circle(${props => props.visible ? "100%" : 0});
   transform: scale(${props => props.visible ? 1 : 0.5});
   padding-inline: 1.5rem;
-  box-shadow: inset 0px 0px 20px #7c7c7c;
+  box-shadow: inset 0px 0px 20px ${props => props.theme === "dark" ? "#7c7c7c" : "rgb(118 118 118)"};
 
   a {
     height: 2.5rem;
     display: flex;
     align-items: center;
     padding-block: 1rem;
-    color: #3e3e3e;
+    color: ${props => props.theme === "dark" ? "#3e3e3e" : "#dddddd"};
     transition: transform 0.5s ease;
     position: relative;
     font-size: 1.4rem;
@@ -60,10 +61,10 @@ const Container = styled.div`
     flex: 0;
 
     &.active {
-      color: black;
+      color: ${props => props.theme === "dark" ? "#3e3e3e" : "white"};
 
       &::before {
-        background: rgb(74 74 74);
+        background: ${props => props.theme === "dark" ? "rgb(74 74 74)" : "white"};
       }
 
 
@@ -94,18 +95,18 @@ const Container = styled.div`
 
     &::before {
       width: 100%;
-      background: #c4c4c4;
+      background: ${props => props.theme === "dark" ? "#c4c4c4" : "rgb(124 124 124)"};
     }
 
     &::after {
       width: 0;
       transition: width 0.3s ease;
-      background: #3e3e3e;
+      background: ${props => props.theme === "dark" ? "#3e3e3e" : "white"};
     }
 
     &:hover {
       transform: translateY(-2px);
-      color: black;
+      color: ${props => props.theme === "dark" ? "black" : "white"};;
 
       &::after {
         width: 100%;

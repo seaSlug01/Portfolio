@@ -5,19 +5,20 @@ import styled from "styled-components";
 import { InputGroup, Label, FieldIcon as Icon, Error } from '../styles/reusableStyles';
 import { setLetters } from "../utils/flyingLetters";
 
-function Input({name, label, icon, placeholder, error, touched, onBlur, ...restProps}) {
+function Input({name, label, icon, placeholder, error, touched, onBlur, theme, ...restProps}) {
   const dispatch = useDispatch();
   const inputId = crypto.randomUUID();
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <Container>
-      <Label htmlFor={inputId}>{label}</Label>
+      <Label htmlFor={inputId} theme={theme}>{label}</Label>
       <InputGroup className={`${isFocused ? "focus" : undefined} ${(error && isFocused) ? "error" : undefined}`}>
-        <Icon>
+        <Icon theme={theme}>
           {icon}
         </Icon>
         <InputField
+          theme={theme}
           onFocus={() => setIsFocused(true)}
           onBlur={(e) => {
             onBlur(e)
@@ -34,7 +35,7 @@ function Input({name, label, icon, placeholder, error, touched, onBlur, ...restP
           {...restProps}
         />
       </InputGroup>
-      {error && touched && <Error>{error}</Error> }
+      {error && touched && <Error theme={theme}>{error}</Error> }
     </Container>
   )
 }
@@ -44,11 +45,11 @@ export default Input
 const InputField = styled.input`
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
-  color: #dbdbdb;
+  color: ;
   width: 100%;
 
   &::placeholder {
-    color: rgb(163 163 163);
+    color: ${props => props.theme === "dark" ? "rgb(163 163 163)" : "#565656"};
   }
 `;
 

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import React, {useEffect, useCallback} from 'react'
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Portal from "./pages/Portal";
 import Header from "./layouts/Header"
@@ -11,12 +11,24 @@ import Project from './layouts/Project';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import {getWindowWidth} from "./utils/mediaQuery.js";
+import { setTheme } from './store/themeSlice';
 
 function App(props) {
   const dispatch = useDispatch();
   const {portal} = props;
   const dispatchSizeFn = useCallback(() => getWindowWidth(dispatch), [dispatch])
   dispatchSizeFn();
+  const theme = useSelector(state => state.theme.mode)
+
+  useEffect(() => {
+    const newTheme = localStorage.getItem("theme");
+    if(theme) {
+      dispatch(setTheme({
+        mode: newTheme,
+        prev: null
+      }))
+    }
+  }, [])
 
   useEffect(() => {
     
@@ -29,8 +41,8 @@ function App(props) {
   
   return (
     <div className="App">
-      <GlobalStyle />
-      <Header />
+      <GlobalStyle theme={theme} />
+      <Header theme={theme} />
       <Wrapper>
         <Routes>
           <Route path='/' element={<Home />} />

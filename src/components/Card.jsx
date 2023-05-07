@@ -5,9 +5,9 @@ import LearnMoreButton from './LearnMoreButton';
 import {randomHeadingColor} from "../utils/utils";
 import { ColorHeading } from '../styles/reusableStyles';
 
-function Card({image, heading, details}) {
+function Card({image, heading, details, theme}) {
   return (
-    <Container>
+    <Container theme={theme}>
       <Image src={image} alt={heading} />
       <div className="text">
         <ColorHeading className={heading.color || randomHeadingColor()}>{heading.text}</ColorHeading>
@@ -25,12 +25,12 @@ const Container = styled.div`
   padding: 0.8rem;
   border-radius: 1rem;
   width: 19rem;
-  background: rgb(64 64 64);
-  box-shadow: 0 20px 40px #202020;
+  background: ${props => props.theme === "dark" ? "rgb(64 64 64)" : "#262626"};;
+  box-shadow: ${props => props.theme === "dark" ? "0 20px 40px #202020" : "rgb(139, 139, 139) 0px 5px 10px" };
   transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 20px 20px #202020;
+    box-shadow: ${props => props.theme === "dark" ? "0 20px 40px #202020" : "10px 10px 10px #8b8b8b" };
   }
 
   button {

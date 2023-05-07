@@ -18,6 +18,12 @@ function Project({projectData, lazyLoad, ...rest}) {
   const dispatch = useDispatch();
   const {id} = useParams();
 
+  const theme = useSelector(state => {
+    if(Boolean(projectData) || id) return state.theme.mode;
+    
+    return "dark"
+  });
+
   const project = useSelector(state => {
     if(projectData) return projectData
     if(id) return projects.find(p => p.id.toString() === id);
@@ -60,9 +66,9 @@ function Project({projectData, lazyLoad, ...rest}) {
         case "p":
           return <p key={index}>{field.text}</p>
         case "tags":
-          return <Tags key={index}>{createTags(field)}</Tags>
+          return <Tags key={index} theme={theme}>{createTags(field)}</Tags>
         case "h2":
-          return projectData ? 
+          return projectData || id ? 
             <ColorHeading key={index} className={project.heading.color || undefined} as="h2">{field.text}</ColorHeading> : 
             <h2 key={index}>{field.text}</h2>
         case "a":
@@ -76,11 +82,11 @@ function Project({projectData, lazyLoad, ...rest}) {
   const Container = projectData || id ? Big : Small
 
   return (
-    <Container {...rest}>
-      <Wrapper className={`${projectData ? undefined : "modal-wrapper"} WRAPPA`}>
-        <Carousel images={project.images} isSmall={projectData || id ? false : true} color={project.heading.color} lazyLoad={lazyLoad} />
+    <Container {...rest} theme={theme}>
+      <Wrapper className={`${projectData ? undefined : "modal-wrapper"}`}>
+        <Carousel images={project.images} isSmall={projectData || id ? false : true} color={project.heading.color} lazyLoad={lazyLoad} theme={theme} />
         <Details>
-          <ColorHeading className={project.heading.color || randomHeadingColor()}>
+          <ColorHeading className={project.heading.color || randomHeadingColor()} theme={theme}>
             {project.href 
               ? <a href={project.href} target="blank">{project.heading.text}</a> 
               : project.heading.text
@@ -91,14 +97,14 @@ function Project({projectData, lazyLoad, ...rest}) {
           {addDetails()}
 
           {(!projectData || id) && (
-            <Controls>
+            <Controls theme={id ? "light" : theme}>
               <LearnMoreButton as={id ? Link : "button"} to={`/projects/${getNextProjectId(-1)}`} iconPosition="left" icon={<RxChevronLeft />} onClick={(e) => changeProject(e, "prev")} text="Previous" />
               <LearnMoreButton as={id ? Link : "button"} to={`/projects/${getNextProjectId(1)}`} onClick={(e) => changeProject(e, "next")} text="Next" />
             </Controls>
           )}
         </Details>
       </Wrapper>
-      {projectData ? <HorizontalRule className="hr" /> : undefined}
+      {projectData ? <HorizontalRule className="hr" theme={theme} /> : undefined}
     </Container>
   )
 }
@@ -195,9 +201,11 @@ const Tags = styled.div`
   }
 
   .tag-heading {
-    color: white;
+    color: ${props => props.theme === "dark" ? "white" : "rgb(2, 2, 2)"};
+    font-weight: ${props => props.theme === "dark" ? 400 : 600};
     margin-right: 1.2rem;
     align-self: flex-start;
+
   }
 
   .tags {
@@ -208,7 +216,7 @@ const Tags = styled.div`
 
     .listItem {
       position: relative;
-      color: rgb(217, 217, 217);
+      color: ${props => props.theme === "dark" ? "rgb(217, 217, 217)" : "rgb(2, 2, 2)"};
 
       &::before {
         content: "";
@@ -246,7 +254,7 @@ const ExtendedStyles = styled.div`
   }
 
   p {
-    color: rgb(217 217 217);
+    color: ${props => props.theme === "dark" ? "rgb(217 217 217)" : "#020202"};
   }
 `;
 
@@ -282,13 +290,14 @@ const Controls = styled.div`
     font-weight: 300;
     letter-spacing: 2px;
     font-size: 0.9rem;
-    color: rgb(211 211 211);
+    color: ${props => props.theme === "dark" ? "rgb(211 211 211)" : "black"};
+    font-weight: ${props => props.theme === "dark" ? "300" : "500"};
     transition: color 0.3s ease;
     margin-bottom: 1rem;
     
     &:hover {
       
-      color: white;
+      color: ${props => props.theme === "dark" ? "white" : "black"};
     }
 
     svg {

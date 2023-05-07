@@ -11,7 +11,7 @@ const activeOutlineColors = {
   green: "#7eab6b"
 }
 
-function Carousel({images, isSmall, color, lazyLoad}) {
+function Carousel({images, isSmall, color, lazyLoad, theme}) {
   const {imageSize, mediaSize} = useSelector(state => state.mediaQuerySize)
   const [selectedImage, setSelectedImage] = useState({src: images[0].src[imageSize] })
 
@@ -84,7 +84,7 @@ function Carousel({images, isSmall, color, lazyLoad}) {
 
   return (
     <Container className={isSmall || mediaSize < 4 ? "small" : undefined}>
-      <CarouselItems>
+      <CarouselItems theme={theme}>
         <Arrow data-to="prev" onClick={(e) => selectImage(e, arrowSelection)}>
           <RxCaretLeft />
         </Arrow>
@@ -98,7 +98,7 @@ function Carousel({images, isSmall, color, lazyLoad}) {
         </Arrow>
       </CarouselItems>
       {images.length > 1 && (
-        <Gallery outlineColor={activeOutlineColors[color]}>
+        <Gallery outlineColor={activeOutlineColors[color]} theme={theme}>
           {images.map((img, index) => (
             lazyLoad ? 
             <LazyLoad key={index} offset={300}>
@@ -149,7 +149,7 @@ const Gallery = styled.div`
     }
 
     &.active {
-      outline: 1px solid;
+      outline: ${props => props.theme === "dark" ? 1 : 2}px solid;
       outline-offset: 2px;
       outline-color: ${props => props.outlineColor}; ;
     }
@@ -220,7 +220,8 @@ const CarouselItems = styled.div`
   width: 100%;
   position: relative;
   height: 35rem;
-  background: #5252526b;
+  
+  background: ${props => props.theme === "dark" ? "#5252526b" : "rgb(167 167 167 / 42%)"};
   border-radius: 1rem;
 `;
 

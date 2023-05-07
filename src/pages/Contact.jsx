@@ -5,19 +5,27 @@ import ContactForm from '../layouts/ContactForm';
 
 function Contact(props) {
   const isModal = useSelector(state => state.portal.component?.toLowerCase() === "contact");
+  const theme = useSelector(state => {
+    if(isModal) return "dark";
+
+    return state.theme.mode;
+  })
+
+
+  console.log("Whats the fucking theme", theme)
   return (
     <Container {...props} className={isModal ? "portal-form" : undefined}>
-      <Header>
-        <Con>
+      <Header theme={theme}>
+        <Con theme={theme}>
           <span>CON</span>
-          <Shadow background="white"/>
+          <Shadow background={theme === "dark" ? "#f9f9f9" : "#1a1a1a"} />
         </Con>
         <Con>
           <span>TACT me.</span>
-          <Shadow background="rgb(50, 50, 50)"/>
+          <Shadow  background={theme === "dark" ? "rgb(50, 50, 50)" : "#f9f9f9"}/>
         </Con>
       </Header>
-      <ContactForm isModal={isModal} /> 
+      <ContactForm isModal={isModal} theme={theme} /> 
     </Container>
     
   )
@@ -49,7 +57,10 @@ const Con = styled.div`
   display: flex;
 
   &:first-of-type {
-    color: black;
+
+    span {
+      color: ${props => props.theme === "dark" ? "#1a1a1a" : "white"};
+    }
 
     &::after {
       content: "";
@@ -59,7 +70,7 @@ const Con = styled.div`
       transform: translate(-50%, -50%);
       width: 3em;
       height: 3em;
-      background: white;
+      background: ${props => props.theme === "dark" ? "#f9f9f9" : "#1a1a1a"};;
       border-radius: 50%;
       z-index: -1;
     }
