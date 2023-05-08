@@ -10,10 +10,12 @@ function Input({name, label, icon, placeholder, error, touched, onBlur, theme, .
   const inputId = crypto.randomUUID();
   const [isFocused, setIsFocused] = useState(false);
 
+  console.log("THEME IN input field", theme)
+
   return (
     <Container>
       <Label htmlFor={inputId} theme={theme}>{label}</Label>
-      <InputGroup className={`${isFocused ? "focus" : undefined} ${(error && isFocused) ? "error" : undefined}`}>
+      <InputGroup className={`${isFocused ? "focus" : undefined} ${(error && isFocused) ? "error" : undefined}`} theme={theme}>
         <Icon theme={theme}>
           {icon}
         </Icon>
@@ -47,6 +49,7 @@ const InputField = styled.input`
   font-size: 1rem;
   color: ;
   width: 100%;
+  color: ${props => props.theme === "dark" ? "#dbdbdb" : "#565656"};
 
   &::placeholder {
     color: ${props => props.theme === "dark" ? "rgb(163 163 163)" : "#565656"};

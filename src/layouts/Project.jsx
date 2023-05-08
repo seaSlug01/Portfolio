@@ -69,7 +69,7 @@ function Project({projectData, lazyLoad, ...rest}) {
           return <Tags key={index} theme={theme}>{createTags(field)}</Tags>
         case "h2":
           return projectData || id ? 
-            <ColorHeading key={index} className={project.heading.color || undefined} as="h2">{field.text}</ColorHeading> : 
+            <ColorHeading key={index} className={project.heading.color || undefined} as="h2" theme={theme}>{field.text}</ColorHeading> : 
             <h2 key={index}>{field.text}</h2>
         case "a":
           return <Visit key={index} href={field.href} target="_blank" className={project.heading.color || undefined}><span>{field.text}</span><BsChevronRight /></Visit>

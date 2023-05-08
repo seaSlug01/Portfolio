@@ -7,7 +7,7 @@ import {ColorHeading} from "../styles/reusableStyles";
 import HorizontalRule from '../components/HorizontalRule';
 
 
-function ProjectPreview({project, ...props}) {
+function ProjectPreview({project, theme, ...props}) {
   const [textSlice, setTextSlice] = useState(true)
 
   const sliceText = () => {
@@ -23,17 +23,17 @@ function ProjectPreview({project, ...props}) {
 
   return (
     <Container {...props}>
-      <Image className={project.heading.color} as={Link} to={`/projects/${project.id}`}>
+      <Image className={project.heading.color} as={Link} to={`/projects/${project.id}`} theme={theme}>
         <LazyLoad>
           <img src={project.images[0].src.medium} alt={project.images[0].src.medium} />
         </LazyLoad>
       </Image>
       <Block>
         <div className="details">
-          <ColorHeading as="h2" className={project.heading.color}>
+          <ColorHeading as="h2" className={project.heading.color} theme={theme}>
             {project.heading.text}
           </ColorHeading>
-          <p onClick={() => setTextSlice(!textSlice)} className={project.textFields[0].text.split(" ").length > 29 ? "cPointer" : undefined}>
+          <p theme={theme} onClick={() => setTextSlice(!textSlice)} className={project.textFields[0].text.split(" ").length > 29 ? "cPointer" : undefined}>
             {
               textSlice ? sliceText() : project.textFields[0].text
             }
@@ -74,16 +74,16 @@ const Block = styled.div`
 
     a, p {
       font-size: 0.9rem;
-      color: #dfdfdf;
+      color: ${props => props.theme === "dark" ? "#dfdfdf" : "rgb(2,2,2)"};
     }
 
     a {
       padding-left: 0;
       text-transform: uppercase;
-      font-weight: 300;
+      font-weight: ${props => props.theme === "dark" ? "300" : "500"};
 
       &:hover {
-        color: white;
+        color: ${props => props.theme === "dark" ? "white" : "black"};
       }
     }
 
@@ -151,19 +151,19 @@ const Image = styled.div`
 
   &.blue {
     &::after {
-      background: linear-gradient(to top, #0084ff4e, transparent);
+      background: linear-gradient(to top, rgb(0, 132, 255, ${props => props.theme === "dark" ? "0.6" : "0.8"}), transparent);
     }
   }
 
   &.violet {
     &::after {
-      background: linear-gradient(to top, #ff2cff45, transparent);
+      background: linear-gradient(to top, rgba(255, 44, 255, ${props => props.theme === "dark" ? 0.37 : 0.57}), transparent);
     }
   }
 
   &.orange {
     &::after {
-      background: linear-gradient(to top, #ff48004c, transparent);
+      background: linear-gradient(to top, rgba(255, 72, 0, ${props => props.theme === "dark" ? 0.298 : 0.55}), transparent);
     }
   }
 

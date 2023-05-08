@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from "styled-components";
 import throttle from "lodash.throttle";
 
-function SubmitButton({text, icon, ...restProps}) {
+function SubmitButton({text, icon, theme, ...restProps}) {
   const ref = useRef();
   const [cursorPosition, setCursorPosition] = useState({
     x: null,
@@ -33,6 +33,7 @@ function SubmitButton({text, icon, ...restProps}) {
 
   return (
     <Button
+      theme={theme}
       ref={ref}
       clipCordinates={cursorPosition}
       {...restProps}
@@ -64,7 +65,7 @@ const Button = styled.button`
   color: #303030;
   border-radius: 0.4rem;
   display: flex;
-  background: rgb(255 155 116);
+  background: ${props => props.theme === "dark" ? "rgb(255 155 116)" : "rgb(116 204 255)"};
   -webkit-box-pack: center;
   justify-content: center;
   -webkit-box-align: center;
@@ -87,7 +88,7 @@ const Button = styled.button`
 
   &:active {
     transform: scale(0.98) translateY(-2px);
-    background: rgb(255 135 88);
+    background: ${props => props.theme === "dark" ? "rgb(255 135 88)" : "rgb(116 204 255)"};
   }
 
   &:hover {

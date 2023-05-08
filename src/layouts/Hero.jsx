@@ -30,7 +30,7 @@ function Hero() {
         {mediaSize < 4 ? 
           <>
             <Slider />
-            {projects.map((p, idx) => (<ProjectPreview className={`preview-${idx}`} key={p.id} project={p} />))}
+            {projects.map((p, idx) => (<ProjectPreview className={`preview-${idx}`} key={p.id} project={p} theme={theme} />))}
           </>
         : <Wheel />}
       </Square>

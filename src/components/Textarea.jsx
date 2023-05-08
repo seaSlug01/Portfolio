@@ -18,9 +18,9 @@ function Textarea({name, label, error, touched, onBlur, onChange, theme, ...rest
 
   return (
     <Container>
-      <Label htmlFor={textareaId}>{label}</Label>
-      <InputGroup className={`${isFocused ? "focus" : undefined} ${(error && isFocused) ? "error" : undefined}`}>
-        <Icon>
+      <Label htmlFor={textareaId} theme={theme}>{label}</Label>
+      <InputGroup className={`${isFocused ? "focus" : undefined} ${(error && isFocused) ? "error" : undefined}`} theme={theme}>
+        <Icon theme={theme}>
           <HiOutlinePencilAlt />
         </Icon>
         <TextareaField id={textareaId} name={name} placeholder="Your message" rows={1} onFocus={() => setIsFocused(true)} theme={theme}
@@ -39,7 +39,7 @@ function Textarea({name, label, error, touched, onBlur, onChange, theme, ...rest
           {...restProps}
         />
       </InputGroup>
-      {error && touched && <Error>{error}</Error> }
+      {error && touched && <Error theme={theme}>{error}</Error> }
     </Container>
   )
 }
@@ -49,7 +49,7 @@ export default Textarea
 const TextareaField = styled.textarea`
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
-  color: ;${props => props.theme === "dark" ? "#dbdbdb" : "#565656"};
+  color: ${props => props.theme === "dark" ? "#dbdbdb" : "#565656"};
   width: 100%;
   overflow:hidden;
   resize: none;

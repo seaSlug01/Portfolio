@@ -13,7 +13,7 @@ import { MdOutlineEmail } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
 
 const EmailSchema = object().shape({
-  email: string().required("Email is required."),
+  email: string().email("Your email is invalid.").required("Email is required."),
   name: string()
       .min(2, "Name is too short")
       .max(70, "Your name is too long")
@@ -49,6 +49,8 @@ const FormFields = [
 
 function ContactForm({isModal, theme}) {
   const formRef = useRef();
+
+  console.log("CONTACT FORM THEME", theme)
 
   const [submitMessage, setSubmitMessage] = useState({
     message: "",
@@ -96,7 +98,7 @@ function ContactForm({isModal, theme}) {
   }
   return (
     <>
-      <FlyingLetters />
+      <FlyingLetters theme={theme} />
       <Formik
         initialValues={initialFormValues}
         validationSchema={EmailSchema}
@@ -118,7 +120,7 @@ function ContactForm({isModal, theme}) {
                 {FormFields.map(({Component, name, label, placeholder, icon }) => {
                   return <Component key={name} name={name} label={label} placeholder={placeholder} value={values[name]} onBlur={handleBlur} onChange={handleChange} error={errors[name]} touched={touched[name]} icon={icon || undefined} theme={theme} />
                 })}
-                <SubmitButton className={isModal ? "mb-5" : ""} type="submit" disabled={!(dirty && isValid) || isSubmitting} />
+                <SubmitButton className={isModal ? "mb-5" : ""} type="submit" disabled={!(dirty && isValid) || isSubmitting} thene={theme} />
               </Form>
             )
           }

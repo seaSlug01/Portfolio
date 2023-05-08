@@ -10,7 +10,7 @@ function Card({image, heading, details, theme}) {
     <Container theme={theme}>
       <Image src={image} alt={heading} />
       <div className="text">
-        <ColorHeading className={heading.color || randomHeadingColor()}>{heading.text}</ColorHeading>
+        <ColorHeading className={heading.color || randomHeadingColor()} theme={theme}>{heading.text}</ColorHeading>
           <p>{details.text}</p>
         <LearnMoreButton text="Learn more" />
       </div>

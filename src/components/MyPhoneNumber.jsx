@@ -10,16 +10,19 @@ function MyPhoneNumber({theme}) {
     animate: true
   });
 
+
+  console.log("THEME IN PHONE NUMBER", theme)
+
   return (
     <Container onClick={() => setText({...text, show: !text.show})}>
       <Group>
-        <Icon>
+        <Icon theme={theme}>
           <BsTelephoneForward />
         </Icon>
-        <Label as="div">My Phone Number:</Label>
+        <Label as="div" theme={theme}>My Phone Number:</Label>
       </Group>
       <Group>
-        <Paragraph className={text.show ? "show" : undefined}>
+        <Paragraph className={`${text.show ? "show" : undefined}`} theme={theme}>
            +30 6942.......Hah...
            {text.show && 
             text.str.split("").map((letter, i) => <Letter onAnimationEnd={() => {
@@ -30,6 +33,7 @@ function MyPhoneNumber({theme}) {
             key={i} 
             delay={i}
             className={text.animate ? "animate" : undefined}
+            theme={theme}
             >{letter}</Letter>)
             }
         </Paragraph>
@@ -69,9 +73,10 @@ const Paragraph = styled.p`
   font-style: italic;
   font-size: 0.85rem;
   line-height: 1.3;
-  color: ${props => props.theme === "dark" ? "#d9d9d9" : "black"};
+  color: ${props => props.theme === "dark" ? "#d9d9d9" : "rgb(2, 2, 2)"};
   letter-spacing: 0.3px;
   margin-top: 0.1rem;
+  font-weight: ${props => props.theme === "dark" ? "normal" : "600"};
 
   &.show {
     &::after {

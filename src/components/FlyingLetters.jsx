@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {removeLetter} from "../store/flyingLettersSlice";
 import styled, {keyframes} from "styled-components";
 
-function FlyingLetters() {
+function FlyingLetters({theme}) {
   const dispatch = useDispatch();
   const letters = useSelector(state => Object.values(state.flyingLetters.letters));
   
@@ -15,6 +15,7 @@ function FlyingLetters() {
             key={l.id}
             cordinates={l.cordinates}
             onAnimationEnd={() => dispatch(removeLetter({id: l.id}))}
+            theme={theme}
             >
             {l.letter}
           </Letter>
@@ -43,7 +44,7 @@ const flyingLetterAnimation = (startX, startY, endX, endY) => keyframes`
 
 const Letter = styled.span`
   position: absolute;
-  color: white;
+  color: ${props => props.theme === "dark" ? "white" : "black"};
   animation: ${props => flyingLetterAnimation(props.cordinates?.startX, props.cordinates?.startY, props.cordinates?.endX, props.cordinates?.endY)} 2s ease forwards;
 `;
 

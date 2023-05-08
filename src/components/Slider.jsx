@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 import LazyLoad from 'react-lazy-load';
 import throttle from "lodash.throttle"
@@ -53,7 +53,9 @@ const getMedia = (setSlider, slider) => {
 
 function Slider() {
   const dispatch = useDispatch();
-  const sliderItems = getEveryProjectsImages()
+  const theme = useSelector(state => state.theme.mode);
+
+  const sliderItems = getEveryProjectsImages();
   const [slider, setSlider] = useState({
     items: sliderItems,
     turn: 1,
@@ -114,7 +116,7 @@ function Slider() {
   }
 
   function setIndicators() {
-    return Array.from(Array(slider.totalTurns), (el, index) => <Indication onClick={() => slide(index + 1)} key={index} className={index + 1 === slider.turn ? "active" : undefined} />)
+    return Array.from(Array(slider.totalTurns), (el, index) => <Indication onClick={() => slide(index + 1)} key={index} className={index + 1 === slider.turn ? "active" : undefined} theme={theme} />)
   }
 
   function displayGallery(e, item, idx) {
@@ -193,15 +195,15 @@ const Indication = styled.button`
       position: absolute;
       transform: translate(-50%, -50%);
       width: 90%;
-      height: 2px;
-      background:#a5a5a5;
+      height: ${props => props.theme === "dark" ? "2px" : "2.5px"};
+      background:${props => props.theme === "dark" ? "#a5a5a5" : "rgb(118 118 118)"};;
       pointer-events: none;
     }
 
     &.active {
       
       &::after {
-        background: white;
+        background: ${props => props.theme === "dark" ? "white" : "#ff4700"};
       }
     }
 
