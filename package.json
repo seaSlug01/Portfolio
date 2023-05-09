@@ -6,7 +6,7 @@
   "scripts": {
     "watch-backend": "nodemon backend.js",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --legacy-peer-deps",
     "preview": "vite preview"
   },
   "dependencies": {
