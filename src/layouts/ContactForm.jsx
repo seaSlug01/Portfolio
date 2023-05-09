@@ -120,7 +120,7 @@ function ContactForm({isModal, theme}) {
                 {FormFields.map(({Component, name, label, placeholder, icon }) => {
                   return <Component key={name} name={name} label={label} placeholder={placeholder} value={values[name]} onBlur={handleBlur} onChange={handleChange} error={errors[name]} touched={touched[name]} icon={icon || undefined} theme={theme} />
                 })}
-                <SubmitButton className={isModal ? "mb-5" : ""} type="submit" disabled={!(dirty && isValid) || isSubmitting} thene={theme} />
+                <SubmitButton className={isModal ? "mb-5" : ""} type="submit" disabled={!(dirty && isValid) || isSubmitting} theme={theme} />
               </Form>
             )
           }

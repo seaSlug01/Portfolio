@@ -9,6 +9,8 @@ function SubmitButton({text, icon, theme, ...restProps}) {
     y: null
   })
 
+  console.log("What's de theme io?", theme)
+
   useEffect(() => {
     let localRef = null;
 
