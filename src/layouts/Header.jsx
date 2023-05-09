@@ -58,6 +58,10 @@ export default Header
 const NavActions = styled.div`
   display: flex;
   gap: 3rem;
+
+  @media (max-width: 550px) {
+    gap: 1.5rem;
+  }
 `;
 
 const HeaderMain = styled.div`

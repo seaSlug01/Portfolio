@@ -66,6 +66,10 @@ const SvgWrapper = styled.div`
     svg {
       color: white;
     }
+
+    @media (max-width: 1200px) {
+      font-size: 1.9rem;
+    }
   }
 
   &.dark {
