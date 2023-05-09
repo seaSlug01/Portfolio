@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {removeLetter} from "../store/flyingLettersSlice";
 import styled, {keyframes} from "styled-components";
 
+const classes = ["red", "green", "purple", "blue", "yellow"]
+
 function FlyingLetters({theme}) {
   const dispatch = useDispatch();
   const letters = useSelector(state => Object.values(state.flyingLetters.letters));
+  
   
   return (
     <Container>
@@ -16,6 +19,7 @@ function FlyingLetters({theme}) {
             cordinates={l.cordinates}
             onAnimationEnd={() => dispatch(removeLetter({id: l.id}))}
             theme={theme}
+            className={theme !== "dark" ? classes[Math.floor(Math.random()*classes.length)] : undefined}
             >
             {l.letter}
           </Letter>
@@ -44,8 +48,28 @@ const flyingLetterAnimation = (startX, startY, endX, endY) => keyframes`
 
 const Letter = styled.span`
   position: absolute;
-  color: ${props => props.theme === "dark" ? "white" : "black"};
+  color: white;
   animation: ${props => flyingLetterAnimation(props.cordinates?.startX, props.cordinates?.startY, props.cordinates?.endX, props.cordinates?.endY)} 2s ease forwards;
+
+  &.red {
+    color: red;
+  }
+
+  &.blue {
+    color: #1d86ff;
+  }
+
+  &.green {
+    color: #37ff37;
+  }
+
+  &.yellow {
+    color: #ffff6e;
+  }
+
+  &.purple {
+    color: #ff40ff;
+  }
 `;
 
 const Container = styled.div`
