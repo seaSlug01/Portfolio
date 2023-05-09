@@ -6,13 +6,12 @@
   "scripts": {
     "watch-backend": "nodemon backend.js",
     "dev": "vite",
-    "build": "vite build --legacy-peer-deps",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@emailjs/browser": "^3.10.0",
     "@reduxjs/toolkit": "^1.9.3",
-    "express": "^4.18.2",
     "formik": "^2.2.9",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
