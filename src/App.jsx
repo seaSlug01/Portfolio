@@ -22,7 +22,7 @@ function App(props) {
 
   useEffect(() => {
     const newTheme = localStorage.getItem("theme");
-    if(theme) {
+    if(newTheme) {
       dispatch(setTheme({
         mode: newTheme,
         prev: null
