@@ -6,7 +6,7 @@
   "scripts": {
     "watch-backend": "nodemon backend.js",
     "dev": "vite",
-    "build": "vite build --legacy-peer-deps",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -29,7 +29,7 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
-    "vite": "^4.1.0",
+    "vite": "^3.2.6",
     "vite-plugin-mix": "^0.4.0"
   }
 }
