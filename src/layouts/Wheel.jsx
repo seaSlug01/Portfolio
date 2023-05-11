@@ -97,6 +97,8 @@ function Wheel() {
     }
   };
 
+  useInterval(rotateWheel, 6000)
+
   return (
     <Container rotateDegress={rotationDegrees} animated={animated} animationSpeed={animationSpeed / 1000} theme={theme}>
       {

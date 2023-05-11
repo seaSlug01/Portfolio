@@ -60,7 +60,7 @@ export const InputGroup = styled.div`
   }
 
   &::after {
-    background: #ff8484;
+    background: ${props => props.theme === "dark" ? "#ff8484" : "#ff3b3b"};
     width: 0;
   }
 

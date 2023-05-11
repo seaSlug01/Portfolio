@@ -134,6 +134,9 @@ const Image = styled.div`
     aspect-ratio: 16/12;
     border-radius: 0.5rem;
     transition: 0.3s all ease;
+    border-bottom: ${props => props.theme === "dark" ? "none" : "1px solid #c3c3c3"};
+    border-left: ${props => props.theme === "dark" ? "none" : "1px solid #c3c3c3"};
+    border-right: ${props => props.theme === "dark" ? "none" : "1px solid #c3c3c3"};
   }
 
   &::after {

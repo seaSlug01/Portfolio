@@ -19,7 +19,7 @@ function FlyingLetters({theme}) {
             cordinates={l.cordinates}
             onAnimationEnd={() => dispatch(removeLetter({id: l.id}))}
             theme={theme}
-            className={theme !== "dark" ? classes[Math.floor(Math.random()*classes.length)] : undefined}
+            className={theme !== "dark" ? l.className : undefined}
             >
             {l.letter}
           </Letter>
@@ -32,7 +32,7 @@ function FlyingLetters({theme}) {
 
 export default FlyingLetters
 
-const flyingLetterAnimation = (startX, startY, endX, endY) => keyframes`
+const flyingLetterAnimation = (startX, startY, endX, endY, theme) => keyframes`
   from {
     top: ${startY}px;
     left: ${startX}px;
@@ -42,14 +42,14 @@ const flyingLetterAnimation = (startX, startY, endX, endY) => keyframes`
     top: ${endY}px;
     left: ${endX}px;
     transform: rotate(720deg);
-    opacity: 0;
+    opacity: ${theme === "dark" ? 0 : 0.7};
   }
 `
 
 const Letter = styled.span`
   position: absolute;
   color: white;
-  animation: ${props => flyingLetterAnimation(props.cordinates?.startX, props.cordinates?.startY, props.cordinates?.endX, props.cordinates?.endY)} 2s ease forwards;
+  animation: ${props => flyingLetterAnimation(props.cordinates?.startX, props.cordinates?.startY, props.cordinates?.endX, props.cordinates?.endY, props.theme)} 2s ease forwards;
 
   &.red {
     color: red;

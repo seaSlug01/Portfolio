@@ -1,10 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import styled, {keyframes} from "styled-components";
 import throttle from "lodash.throttle";
 import {BsChevronRight, BsChevronLeft} from "react-icons/bs"
 
-function Gallery({projectId, imageSRCs, index, gallery, ...restProps}) {
+function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restProps}) {
+  
   const {imageSize} = useSelector(state => state.mediaQuerySize)
   const imgRef = useRef();
 
@@ -16,7 +17,7 @@ function Gallery({projectId, imageSRCs, index, gallery, ...restProps}) {
 
   function changePhoto() {
     var targetIndex = cursor.direction === "right" ? currentItem.index + 1 : currentItem.index - 1;
-    if(targetIndex === - 1 || targetIndex > gallery.length - 1) return;
+    if(targetIndex === - 1 || targetIndex > gallery.length - 1) return closePortal();
 
     var nextGalleryItem = gallery[targetIndex];
 

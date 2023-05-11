@@ -37,6 +37,8 @@ export function setLetterCordinates(e) {
   }
 }
 
+const classes = ["red", "green", "purple", "blue", "yellow"]
+
 export function setLetters(e, dispatch) {
   const pressedKey = myPressedKey(e);
   if(!isChar(pressedKey)) return;
@@ -45,6 +47,7 @@ export function setLetters(e, dispatch) {
   dispatch(setFlyingLetters({
     id: crypto.randomUUID(),
     letter: pressedKey,
-    cordinates
+    cordinates,
+    className: classes[Math.floor(Math.random()*classes.length)]
   }));
 }

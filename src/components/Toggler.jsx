@@ -20,11 +20,11 @@ function Toggler() {
       localStorage.setItem("theme", newMode);
     }}>
 
-        <SvgWrapper mode={theme.mode} prevMode={theme.prev} className={`light ${theme.prev ? "animate" : undefined}`}>
+        <SvgWrapper mode={theme.mode} prevMode={theme.prev} className={`switchTo--light ${theme.prev ? "animate" : undefined}`}>
           <HiOutlineMoon />
         </SvgWrapper>
 
-        <SvgWrapper mode={theme.mode} prevMode={theme.prev} className={`dark ${theme.prev ? "animate" : undefined}`}>
+        <SvgWrapper mode={theme.mode} prevMode={theme.prev} className={`switchTo--dark ${theme.prev ? "animate" : undefined}`}>
           <HiOutlineSun />
         </SvgWrapper>
 
@@ -55,34 +55,39 @@ const SvgWrapper = styled.div`
   opacity: 0;
   mix-blend-mode: difference;
 
-  &.light {
-    opacity: ${props => props.mode === "light" ? 1 : 0};
-    font-size: 2.1rem;
+  &.switchTo {
 
-    &.animate {
-      animation: ${props => props.prevMode === "dark" ? rotateTo(90, 0) : rotateTo(0, 90)} 0.5s ease forwards;
+
+    &--light {
+      opacity: ${props => props.mode === "light" ? 1 : 0};
+      font-size: 2.1rem;
+
+      &.animate {
+        animation: ${props => props.prevMode === "dark" ? rotateTo(90, 0) : rotateTo(0, 90)} 0.5s ease forwards;
+      }
+
+      svg {
+        color: white;
+      }
+
+      @media (max-width: 1200px) {
+        font-size: 1.9rem;
+      }
     }
 
-    svg {
-      color: white;
-    }
+    &--dark {
+      opacity: ${props => props.mode === "dark" ? 1 : 0};
+      font-size: 2rem;
 
-    @media (max-width: 1200px) {
-      font-size: 1.9rem;
-    }
-  }
+      &.animate {
+        animation: ${props => props.prevMode === "light" ? rotateTo(-90, 0) : rotateTo(0 , -90)} 0.5s ease forwards;
+      }
 
-  &.dark {
-    opacity: ${props => props.mode === "dark" ? 1 : 0};
-    font-size: 2rem;
-
-    &.animate {
-      animation: ${props => props.prevMode === "light" ? rotateTo(-90, 0) : rotateTo(0 , -90)} 0.5s ease forwards;
+      svg {
+        color: #d8d8d8;
+      }
     }
-
-    svg {
-      color: #d8d8d8;
-    }
+    
   }
 
 
