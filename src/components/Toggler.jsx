@@ -57,7 +57,6 @@ const SvgWrapper = styled.div`
 
   &.switchTo {
 
-
     &--light {
       opacity: ${props => props.mode === "light" ? 1 : 0};
       font-size: 2.1rem;

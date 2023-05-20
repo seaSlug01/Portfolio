@@ -52,12 +52,12 @@ function Carousel({images, isSmall, color, lazyLoad, theme}) {
 
   const imageAnimation = (direction, targetImageIndex) => {
     let prevStyles = {
-      animation: `${direction === "next" ? "slideRight" : "slideLeft"} 0.75s ease forwards`
+      animation: `${direction === "next" ? "slideLeft" : "slideRight"} 0.75s ease forwards`
     }
 
     let currentStyles = {
-      left: direction === "next" ? "-100%" : "100%",
-      animation: `${direction === "next" ? "slideRight" : "slideLeft"} 0.75s ease forwards`
+      left: direction === "next" ? "100%" : "-100%",
+      animation: `${direction === "next" ? "slideLeft" : "slideRight"} 0.75s ease forwards`
     };
 
     setPreviousSelectedImage({...selectedImage, styles: prevStyles})

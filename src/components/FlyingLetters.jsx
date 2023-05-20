@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {removeLetter} from "../store/flyingLettersSlice";
 import styled, {keyframes} from "styled-components";
 
-const classes = ["red", "green", "purple", "blue", "yellow"]
-
 function FlyingLetters({theme}) {
   const dispatch = useDispatch();
   const letters = useSelector(state => Object.values(state.flyingLetters.letters));
