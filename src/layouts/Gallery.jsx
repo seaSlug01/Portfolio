@@ -38,20 +38,42 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
   const [cursor, setCursor] = useState({
     show: false,
     x: 0,
-    y: 0
+    y: 0,
+    backgroundPositionX: 0,
+    backgroundPositionY: 0
   })
 
   const getCursorPosition = throttle((e) => {
-    var rect = e.target.parentElement.getBoundingClientRect();
+    var rect = e.target.parentElement.parentElement.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const y =  e.clientY - rect.top; 
+    const y =  e.clientY - rect.top;
+
+    // console.log(e.target.offsetHeight, Math.abs(e.target.getBoundingClientRect().top - e.clientY))
+
+    // Thelw na 3ekinaei apo to 0 kai na ftanei sto megethos tis eikonas (y)
+    // otan einai 0 einai 60% alla oso plhsiazei to katw meros ginetai 0
+
+    // thelw sto y na einai deksia 75 kai na ftanei -75
+    // ara tha einai eite 0 eite 100
+
+    console.log(rect.width - e.target.offsetWidth)
+
+    const backgroundPositionY = 60 - (((Math.abs(e.target.getBoundingClientRect().top - e.clientY) / e.target.offsetHeight) * 100) * 0.6);
+    const backgroundPositionX = (Math.abs(e.target.getBoundingClientRect().left - e.clientX) / e.target.offsetWidth) * 100;
+
+    
+
 
     setCursor({
       show: true,
       x,
-      y
+      y,
+      backgroundPositionY,
+      backgroundPositionX
     })
-  }, 35)
+
+    
+  }, 30)
 
   useEffect(() => {
     let cursorUnsub;
@@ -63,7 +85,7 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
     
 
     return () => {
-      copyRef.removeEventListener("mouseover", cursorUnsub);
+      copyRef.removeEventListener("mousemove", cursorUnsub);
     }
   }, [])
 
@@ -75,25 +97,27 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
         <Controller className="right" onClick={() => changePhoto("right")}>
           <BsChevronRight />
         </Controller>
-      <Image ref={imgRef} onClick={() => setZoom({show: !zoom.show})} onMouseLeave={() => {
-        setZoom({show: false})
-        setCursor({...cursor, show: false})
-      }}>
-        <img src={currentItem.src} alt={currentItem.src} />
+      <Image onClick={() => setZoom({show: !zoom.show})}>
+        <img ref={imgRef} src={currentItem.src} alt={currentItem.src} onMouseLeave={() => {
+          setTimeout(() => {
+            setZoom({show: false})
+            setCursor({...cursor, show: false})
+          }, 30)
+        }}/>
         <Pointer top={cursor.y} left={cursor.x} show={cursor.show}>
           <RxMagnifyingGlass />
         </Pointer>
       </Image>
-      <ZoomedImageContainer>
-        <ZoomedImage y={cursor.y} x={cursor.x} show={zoom.show} image={currentItem.src} />
-      </ZoomedImageContainer>
+      <ZoomContainer>
+        <ZoomedImage y={cursor.y} x={cursor.x} show={zoom.show} image={currentItem.src} backgroundPositionX={cursor.backgroundPositionX} backgroundPositionY={cursor.backgroundPositionY}/>
+      </ZoomContainer>
     </Container>
   )
 }
 
 export default Gallery
 
-const ZoomedImageContainer = styled.div`
+const ZoomContainer = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -114,7 +138,7 @@ const ZoomedImage = styled.div`
   clip-path: circle(${props => props.show ? "150px" : 0} at ${props => `${props.x + 75}px`} ${props => `${props.y + 75}px`});
   background-image: url(${props => props.image});
   background-size: contain;
-  background-position: calc(60% + 75px) calc(60% + 75px);
+  background-position: calc(${props => `${100 - props.backgroundPositionX}px`}) calc(${props => `${props.backgroundPositionY}%`} + 75px);
   background-repeat: no-repeat;
 `;
 
@@ -156,14 +180,15 @@ const Controller = styled.button`
 const Pointer = styled.div.attrs(props => ({
   style: {
     top:`${props.top}px`,
-    left: `${props.left}px`
+    left: `${props.left}px`,
+    opacity: props.show ? 1 : 0
   },
 }))`
 
   position: absolute;
-  transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  opacity: ${props => props.show ? 1 : 0};
+  
 
   svg {
     font-size: 3rem;
@@ -203,7 +228,6 @@ const scaleUp = (top, left, scale) => keyframes`
 `
 
 const Image = styled.div`
-  cursor: none;
   user-select: none;
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -211,17 +235,16 @@ const Image = styled.div`
   -o-user-select: none;
   width: 70%;
   height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   img {
-    pointer-events: none;
     object-fit: contain;
-  }
-
-  &:hover {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
     cursor: none;
-    ${Pointer} {
-      transform: translate(-50%, -50%) scale(1);
-    }
   }
 
   @media (max-width: 750px) {
@@ -232,7 +255,7 @@ const Image = styled.div`
     }
 
     img {
-      pointer-events: all;
+      cursor: default;
     }
   }
 `;
