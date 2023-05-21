@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useRef, useMemo, useCallback} from 'react'
 import {useSelector} from "react-redux";
 import styled, {keyframes} from "styled-components";
 import {BsChevronRight, BsChevronLeft} from "react-icons/bs"
@@ -18,8 +18,19 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
 
 
   const [zoom, setZoom] = useState({
-    show: false,
+    lens: {
+      show: false,
+      x: 0,
+      y: 0
+    },
+    cursor: {
+      show: false,
+      x: 0,
+      y: 0,
+    }
   })
+
+  const {cursor, lens} = zoom;
 
   function changePhoto(direction) {
     var targetIndex = direction === "right" ? currentItem.index + 1 : currentItem.index - 1;
@@ -35,59 +46,37 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
 
   }
 
-  const [cursor, setCursor] = useState({
-    show: false,
-    x: 0,
-    y: 0,
-    backgroundPositionX: 0,
-    backgroundPositionY: 0
-  })
-
-  const getCursorPosition = throttle((e) => {
-    var rect = e.target.parentElement.parentElement.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y =  e.clientY - rect.top;
+  const getCursorCordinates = throttle((e) => {
+    const parentRect = e.target.parentElement.parentElement.getBoundingClientRect();
+    let cursorX = e.clientX - parentRect.left;
+    let cursorY =  e.clientY - parentRect.top;
 
     // console.log(e.target.offsetHeight, Math.abs(e.target.getBoundingClientRect().top - e.clientY))
 
     // Thelw na 3ekinaei apo to 0 kai na ftanei sto megethos tis eikonas (y)
     // otan einai 0 einai 60% alla oso plhsiazei to katw meros ginetai 0
 
-    // thelw sto y na einai deksia 75 kai na ftanei -75
+    // to x na einai deksia 75 kai na ftanei -75 (75 h aktina tou magnifying glass)
     // ara tha einai eite 0 eite 100
+    const imgRect = e.target.getBoundingClientRect();
+    let backgroundPositionY = 60 - (((Math.abs(imgRect.top - e.clientY) / imgRect.height) * 100) * 0.6);
+    let backgroundPositionX = (Math.abs(imgRect.left - e.clientX) / imgRect.width) * 200;
 
-    console.log(rect.width - e.target.offsetWidth)
-
-    const backgroundPositionY = 60 - (((Math.abs(e.target.getBoundingClientRect().top - e.clientY) / e.target.offsetHeight) * 100) * 0.6);
-    const backgroundPositionX = (Math.abs(e.target.getBoundingClientRect().left - e.clientX) / e.target.offsetWidth) * 100;
-
-    
-
-
-    setCursor({
-      show: true,
-      x,
-      y,
-      backgroundPositionY,
-      backgroundPositionX
+    setZoom({
+      cursor: {
+        show: true,
+        x: cursorX,
+        y: cursorY
+      },
+      lens: {
+        ...lens,
+        x: 100 - backgroundPositionX,
+        y: backgroundPositionY,
+      }
     })
-
-    
-  }, 30)
-
-  useEffect(() => {
-    let cursorUnsub;
-    const copyRef = imgRef.current;
-
-    if(copyRef) {
-      cursorUnsub = copyRef.addEventListener("mousemove", getCursorPosition)
-    }
-    
-
-    return () => {
-      copyRef.removeEventListener("mousemove", cursorUnsub);
-    }
-  }, [])
+  }, 100
+)
+  const getCursorCordinatesCb = useCallback(e => getCursorCordinates(e), [getCursorCordinates])
 
   return (
     <Container {...restProps}>
@@ -97,19 +86,27 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
         <Controller className="right" onClick={() => changePhoto("right")}>
           <BsChevronRight />
         </Controller>
-      <Image onClick={() => setZoom({show: !zoom.show})}>
+      <Image onClick={() => setZoom({cursor: {...cursor, show: !lens.show ? false : true}, lens: { ...lens, show: !lens.show }} )}>
         <img ref={imgRef} src={currentItem.src} alt={currentItem.src} onMouseLeave={() => {
           setTimeout(() => {
-            setZoom({show: false})
-            setCursor({...cursor, show: false})
+            setZoom({
+              lens: {
+                ...lens, show: false
+              },
+              cursor: {
+                ...cursor, show: false
+              }
+            })
           }, 30)
-        }}/>
+        }} 
+        onMouseMove={(e) => getCursorCordinatesCb(e)}
+        />
         <Pointer top={cursor.y} left={cursor.x} show={cursor.show}>
           <RxMagnifyingGlass />
         </Pointer>
       </Image>
       <ZoomContainer>
-        <ZoomedImage y={cursor.y} x={cursor.x} show={zoom.show} image={currentItem.src} backgroundPositionX={cursor.backgroundPositionX} backgroundPositionY={cursor.backgroundPositionY}/>
+        <ZoomedImage cursorY={cursor.y} cursorX={cursor.x} show={lens.show} image={currentItem.src} backgroundPositionX={lens.x} backgroundPositionY={lens.y}/>
       </ZoomContainer>
     </Container>
   )
@@ -135,10 +132,10 @@ const ZoomContainer = styled.div`
 const ZoomedImage = styled.div`
   width: 100%;
   height: 100%;
-  clip-path: circle(${props => props.show ? "150px" : 0} at ${props => `${props.x + 75}px`} ${props => `${props.y + 75}px`});
+  clip-path: circle(${props => props.show ? "150px" : 0} at ${props => `${props.cursorX + 75}px`} ${props => `${props.cursorY + 75}px`});
   background-image: url(${props => props.image});
   background-size: contain;
-  background-position: calc(${props => `${100 - props.backgroundPositionX}px`}) calc(${props => `${props.backgroundPositionY}%`} + 75px);
+  background-position: calc(${props => `${props.backgroundPositionX}px`}) calc(${props => `${props.backgroundPositionY}%`} + 75px);
   background-repeat: no-repeat;
 `;
 
