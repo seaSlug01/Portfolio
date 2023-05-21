@@ -58,23 +58,27 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
 
     // to x na einai deksia 75 kai na ftanei -75 (75 h aktina tou magnifying glass)
     // ara tha einai eite 0 eite 100
+    
     const imgRect = e.target.getBoundingClientRect();
+    const imageDiffX = e.target.parentElement.nextElementSibling.offsetWidth - imgRect.width;
     let backgroundPositionY = 60 - (((Math.abs(imgRect.top - e.clientY) / imgRect.height) * 100) * 0.6);
-    let backgroundPositionX = (Math.abs(imgRect.left - e.clientX) / imgRect.width) * 200;
+    let backgroundPositionX = (Math.abs(imgRect.left - e.clientX) / imgRect.width) * imageDiffX;
+
+    console.log();
 
     setZoom({
       cursor: {
-        show: true,
+        show: !lens.show,
         x: cursorX,
         y: cursorY
       },
       lens: {
         ...lens,
-        x: 100 - backgroundPositionX,
+        x: (imageDiffX / 2) - backgroundPositionX,
         y: backgroundPositionY,
       }
     })
-  }, 100
+  }, 30
 )
   const getCursorCordinatesCb = useCallback(e => getCursorCordinates(e), [getCursorCordinates])
 
