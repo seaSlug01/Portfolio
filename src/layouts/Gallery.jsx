@@ -61,7 +61,10 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
     
     const imgRect = e.target.getBoundingClientRect();
     const imageDiffX = e.target.parentElement.nextElementSibling.offsetWidth - imgRect.width;
-    let backgroundPositionY = 60 - (((Math.abs(imgRect.top - e.clientY) / imgRect.height) * 100) * 0.6);
+    const imageDiffY = e.target.parentElement.nextElementSibling.offsetHeight - imgRect.height;
+    const backgroundPositionY = (Math.abs(imgRect.top - e.clientY) / imgRect.height) * imageDiffY;
+    // let backgroundPositionY = 60 - (((Math.abs(imgRect.top - e.clientY) / imgRect.height) * 100) * 0.6);
+    
     let backgroundPositionX = (Math.abs(imgRect.left - e.clientX) / imgRect.width) * imageDiffX;
 
     console.log();
@@ -75,7 +78,7 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
       lens: {
         ...lens,
         x: (imageDiffX / 2) - backgroundPositionX,
-        y: backgroundPositionY,
+        y:  (imageDiffY / 2) - backgroundPositionY,
       }
     })
   }, 30
@@ -109,8 +112,8 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
           <RxMagnifyingGlass />
         </Pointer>
       </Image>
-      <ZoomContainer>
-        <ZoomedImage cursorY={cursor.y} cursorX={cursor.x} show={lens.show} image={currentItem.src} backgroundPositionX={lens.x} backgroundPositionY={lens.y}/>
+      <ZoomContainer cursorY={cursor.y} cursorX={cursor.x} show={lens.show}>
+          <ZoomedImage image={currentItem.src} backgroundPositionX={lens.x} backgroundPositionY={lens.y} src={currentItem.src} />
       </ZoomContainer>
     </Container>
   )
@@ -127,20 +130,31 @@ const ZoomContainer = styled.div`
   height: 120%;
   pointer-events: none;
   filter: drop-shadow(0 0 10px rgba(50, 50, 0, 0.5));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  clip-path: circle(${props => props.show ? "150px" : 0} at ${props => `${props.cursorX + 75}px`} ${props => `${props.cursorY + 75}px`});
+
 
   @media (max-width: 750px) {
     display: none;
   }
 `;
 
-const ZoomedImage = styled.div`
-  width: 100%;
-  height: 100%;
-  clip-path: circle(${props => props.show ? "150px" : 0} at ${props => `${props.cursorX + 75}px`} ${props => `${props.cursorY + 75}px`});
-  background-image: url(${props => props.image});
-  background-size: contain;
-  background-position: calc(${props => `${props.backgroundPositionX}px`}) calc(${props => `${props.backgroundPositionY}%`} + 75px);
-  background-repeat: no-repeat;
+const ZoomedImage = styled.img`
+  /* width: 100%;
+  height: 100%; */
+  
+  /* /* background-image: url(${props => props.image}); */
+  /* background-size: contain; */
+  /* background-position: calc(${props => `${props.backgroundPositionX}px`}) calc(${props => `${props.backgroundPositionY}%`} + 75px);
+  background-repeat: no-repeat;  */
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  object-position: calc(${props => `${props.backgroundPositionX}px`}) calc(${props => `${props.backgroundPositionY}px`});
+  outline-offset: 5px;
+  outline: 2px solid white;
 `;
 
 const Controller = styled.button`
@@ -263,7 +277,7 @@ const Image = styled.div`
 
 const Container = styled.div`
   width: 880px;
-  height: 40vw;
+  height: 80vh;
   animation: ${props => scaleUp(props.cordinates.top, props.cordinates.left, props.cordinates.width / 800)} 0.5s ease-in-out forwards;
   transform-origin: 0 0;
   background: rgb(62, 62, 62, 0.5);
