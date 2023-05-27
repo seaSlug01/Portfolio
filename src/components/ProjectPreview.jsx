@@ -28,12 +28,12 @@ function ProjectPreview({project, theme, ...props}) {
           <img src={project.images[0].src.medium} alt={project.images[0].src.medium} />
         </LazyLoad>
       </Image>
-      <Block>
+      <Block theme={theme}>
         <div className="details">
           <ColorHeading as="h2" className={project.heading.color} theme={theme}>
             {project.heading.text}
           </ColorHeading>
-          <p theme={theme} onClick={() => setTextSlice(!textSlice)} className={project.textFields[0].text.split(" ").length > 29 ? "cPointer" : undefined}>
+          <p onClick={() => setTextSlice(!textSlice)} className={project.textFields[0].text.split(" ").length > 29 ? "cPointer" : undefined}>
             {
               textSlice ? sliceText() : project.textFields[0].text
             }

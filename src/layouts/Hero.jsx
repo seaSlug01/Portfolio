@@ -15,26 +15,35 @@ function Hero() {
   const theme = useSelector(state => state.theme.mode);
 
   return (
-    <Section>
-      <Square backgroundImage="/assets/3-small.jpg">
-        <Block theme={theme}>
-          <Title theme={theme}>
-            <h1 className="">Neelixmans Area</h1>
-          </Title>
-          <p>Hi, I'm Neelix, a web developer enthousiast.</p>
-          <p>This website is a representation of some of my works. Feel free to browse.</p>
-          <SubmitButton text="Contact" className="btn-contact" icon={<BsFillPeopleFill />} onClick={() => dispatch(togglePortal({show: true, component: "Contact"}))} />
-        </Block>
-      </Square>
-      <Square className={theme === "dark" ? "dark" : "light"}>
-        {mediaSize < 4 ? 
-          <>
+    <>
+      <Section>
+        <Square backgroundImage="/assets/3-small.jpg">
+          <Block theme={theme}>
+            <Title theme={theme}>
+              <h1 className="">Neelixmans Area</h1>
+            </Title>
+            <p>Hi, I'm Neelix, a web developer enthousiast.</p>
+            <p>This website is a representation of some of my works. Feel free to browse.</p>
+            <SubmitButton text="Contact" className="btn-contact" icon={<BsFillPeopleFill />} onClick={() => dispatch(togglePortal({show: true, component: "Contact"}))} />
+          </Block>
+        </Square>
+        <Square className={theme === "dark" ? "dark" : "light"}>
+          {mediaSize < 4 ? 
+            <>
+              <Slider />
+              {projects.map((p, idx) => (<ProjectPreview className={`preview-${idx}`} key={p.id} project={p} theme={theme} />))}
+            </>
+          : <Wheel />}
+        </Square>
+      </Section>
+      {
+        mediaSize >= 4 && (
+          <div className="m-block m-block--5">
             <Slider />
-            {projects.map((p, idx) => (<ProjectPreview className={`preview-${idx}`} key={p.id} project={p} theme={theme} />))}
-          </>
-        : <Wheel />}
-      </Square>
-    </Section>
+          </div>
+        )
+      }
+    </>
   )
 }
 

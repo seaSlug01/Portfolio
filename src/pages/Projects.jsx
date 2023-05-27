@@ -12,7 +12,7 @@ function Projects() {
       {
         projects.map((p, idx) => <Project key={p.id} projectData={p} lazyLoad={idx !== 0} />)
       }
-      <div className="gallery">
+      <div className="m-block m-block--5">
         <Slider /> 
       </div>
     </Container>
@@ -21,9 +21,4 @@ function Projects() {
 
 export default Projects
 
-const Container = styled.div`
-
-  .gallery {
-    margin-block: 5rem;
-  }
-`;
+const Container = styled.div``;

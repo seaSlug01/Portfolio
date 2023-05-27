@@ -130,7 +130,7 @@ function Slider() {
     <Container>
 
       <Header>
-        <Heading>Gallery</Heading>
+        <Heading theme={theme}>Gallery</Heading>
         <Indicators>
           {
             setIndicators()
@@ -352,6 +352,7 @@ const Heading = styled.h2`
   font-size: 1.6vw;
   font-weight: 400;
   letter-spacing: 0.3px;
+  color: ${props => props.theme === "dark" ? "white" : "black"};
 
   @media (max-width: 850px) {
     font-size: 1rem;

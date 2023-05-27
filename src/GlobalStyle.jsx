@@ -50,6 +50,7 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .d-none {
@@ -62,6 +63,28 @@ img {
 
 .mb-5 {
   margin-bottom: 5rem !important;
+}
+
+.m-block {
+  &--1 {
+    margin-block: 1rem;
+  }
+
+  &--2 {
+    margin-block: 2rem;
+  }
+
+  &--3 {
+    margin-block: 3rem;
+  }
+
+  &--4 {
+    margin-block: 4rem;
+  }
+
+  &--5 {
+    margin-block: 5rem;
+  }
 }
 
 `;
