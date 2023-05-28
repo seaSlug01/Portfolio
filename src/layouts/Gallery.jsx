@@ -201,8 +201,9 @@ const ZoomedImage = styled.img.attrs(props => ({
   max-width: 100%;
   max-height: 100%;
   height: auto;
-  object-position: ${props => `${props.backgroundPositionX}px`} ${props => `${props.backgroundPositionY}px`};
   object-fit: contain;
+  object-position: ${props => `${props.backgroundPositionX}px`} ${props => `${props.backgroundPositionY}px`};
+  
 
   @media (max-width: 975px) {
     --pointer-radius: 20px;
@@ -316,7 +317,6 @@ const Image = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid white;
 
   img {
     object-fit: contain;
