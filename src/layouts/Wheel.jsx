@@ -187,7 +187,7 @@ const Container = styled.ul`
   width: 43vw;
   height: 43vw;
   position: absolute;
-  transform: translateX(63%) rotate(${props => props.rotateDegress}deg);
+  transform: translateX(64%) rotate(${props => props.rotateDegress}deg);
   cursor: pointer;
   ${props => props.animated && `transition: ${props.animationSpeed}s ease-in-out all`};
 

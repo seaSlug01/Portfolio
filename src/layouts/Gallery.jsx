@@ -116,9 +116,7 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
 
     const imageDiffY = zoomedImageCordinates.height - imgRect.height;
     const backgroundPositionY = (Math.abs(imgRect.top - e.clientY) / imgRect.height) * imageDiffY;
-    // let backgroundPositionY = 60 - (((Math.abs(imgRect.top - e.clientY) / imgRect.height) * 100) * 0.6);
 
-    console.log("Y: ", (e.target.parentElement.offsetHeight - e.target.offsetHeight) / 2, "X: ", (parentRect.width - e.target.offsetWidth) / 2, )
 
     dispatch({type: "set_lens", payload: {cursor: {
       show: !lens.show,
@@ -128,7 +126,7 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
     lens: {
       ...lens,
       offsetY: (e.target.parentElement.offsetHeight - e.target.offsetHeight) / 2,
-      offsetX: (parentRect.width - e.target.offsetWidth) / 2,
+      offsetX: (e.target.parentElement.offsetWidth - e.target.offsetWidth) / 2,
       imageBgX: ((zoomedImageCordinates.realWidth - zoomedImageCordinates.width) / 2) + ((imageDiffX / 2) - backgroundPositionX),
       imageBgY: (((zoomedImageCordinates.realHeight - zoomedImageCordinates.height) / 2) + ((imageDiffY / 2) - backgroundPositionY)),
     }}})
@@ -191,13 +189,22 @@ const ZoomContainer = styled.div`
 `;
 
 const ZoomedImage = styled.img`
+  --pointer-radius: 24px;
+  --lens-radius: 75px;
+  --lens-diameter: 150px;
+
+
   /* opacity: 0.5; */
-  clip-path: circle(${props => props.show ? "150px" : 0} at ${props => `${(props.cursorX) + 75}px`} ${props => `${(props.cursorY - props.offsetY) + 75}px`});
+  clip-path: circle(${props => props.show ? "var(--lens-diameter)" : 0} at calc(${props => `${(props.cursorX)}px`} + var(--lens-radius) - var(--pointer-radius)) calc(${props => `${(props.cursorY - props.offsetY)}px`} + var(--lens-radius) - var(--pointer-radius)));
   max-width: 100%;
   max-height: 100%;
   height: auto;
-  object-position: calc(${props => `${props.backgroundPositionX}px`}) calc(${props => `${props.backgroundPositionY}px`});
+  object-position: ${props => `${props.backgroundPositionX}px`} ${props => `${props.backgroundPositionY}px`};
   object-fit: contain;
+
+  @media (max-width: 975px) {
+    --pointer-radius: 20px;
+  }
 `;
 
 const Controller = styled.button`
@@ -242,7 +249,6 @@ const Pointer = styled.div.attrs(props => ({
     opacity: props.show ? 1 : 0
   },
 }))`
-
   position: absolute;
   transform: translate(-50%, -50%);
   pointer-events: none;
