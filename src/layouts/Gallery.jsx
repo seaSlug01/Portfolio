@@ -1,19 +1,65 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react'
+import React, {useState, useRef, useEffect, useCallback, useReducer} from 'react'
 import {useSelector} from "react-redux";
 import styled, {keyframes} from "styled-components";
 import {BsChevronRight, BsChevronLeft} from "react-icons/bs"
 import { RxMagnifyingGlass } from "react-icons/rx"
 import throttle from "lodash.throttle";
+import { getContainedSize } from '../utils/utils';
 
-function getContainedSize(img) {
-  var ratio = img.naturalWidth/img.naturalHeight
-  var width = img.height*ratio
-  var height = img.height
-  if (width > img.width) {
-    width = img.width
-    height = img.width/ratio
+
+
+
+const initialState = {
+  lens: {
+    show: false,
+    imageDiffY: 0,
+    imageDiffX: 0,
+    x: 0,
+    y: 0
+  },
+  cursor: {
+    show: false,
+    x: 0,
+    y: 0,
+  },
+  zoomedImageCordinates: {
+    width: 0,
+    height: 0,
+    realWidth: 0,
+    realHeight: 0
   }
-  return [width, height, img.width, img.height]
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'set_lens':
+      return {...state, ...action.payload};
+    case 'toggle_lens':
+      return {...state, cursor: {...state.cursor, show: !state.lens.show ? false : true}, lens: {...state.lens, show: !state.lens.show}};
+    case 'close_lens':
+      return {...state, lens: {...state.lens, show: false}, cursor: {...state.cursor, show: false}}
+    case 'set_zoomed_image_cordinates':
+      return {
+        ...state, 
+        zoomedImageCordinates: action.payload
+      }
+    default:
+      return state
+  }
+}
+
+const setContainedSize = (img, dispatch) => {
+    if(!img) return;
+    const containedSize = getContainedSize(img);
+
+    console.log("Contained size triggers")
+
+    dispatch({type: "set_zoomed_image_cordinates", payload: {
+      width: containedSize[0],
+      height: containedSize[1],
+      realWidth: containedSize[2],
+      realHeight: containedSize[3],
+    }})
 }
 
 function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restProps}) {
@@ -26,45 +72,23 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
     src: imageSRCs[imageSize]
   })
 
-  const [zoom, setZoom] = useState({
-    lens: {
-      show: false,
-      imageDiffY: 0,
-      imageDiffX: 0,
-      x: 0,
-      y: 0
-    },
-    cursor: {
-      show: false,
-      x: 0,
-      y: 0,
-    },
-    zoomedImageCordinates: {
-      width: 0,
-      height: 0,
-      realWidth: 0,
-      realHeight: 0
-    }
-  })
+  const [zoom, dispatch] = useReducer(reducer, initialState);
 
   const {cursor, lens, zoomedImageCordinates} = zoom;
 
   useEffect(() => {
-    if(zoomRef.current) {
-      const containedSize = getContainedSize(zoomRef.current);
-      setZoom({
-        ...zoom,
-        zoomedImageCordinates: {
-          width: containedSize[0],
-          height: containedSize[1],
-          realWidth: containedSize[2],
-          realHeight: containedSize[3],
-        }
-      })
-
-      console.log(zoomedImageCordinates, zoom)
-    }
+    setContainedSize(zoomRef.current, dispatch);
   }, [currentItem])
+
+  useEffect(() => {
+
+    const throttled = throttle(() => setContainedSize(zoomRef.current, dispatch), 1000)
+    const resize = window.addEventListener("resize", throttled);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    }
+  }, [])
 
 
   function changePhoto(direction) {
@@ -81,50 +105,35 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
 
   }
 
-  const getCursorCordinates = throttle((e) => {
+  const getCursorCordinates = (e) => {
     const parentRect = e.target.parentElement.parentElement.getBoundingClientRect();
     const imgRect = e.target.getBoundingClientRect();
     let cursorX = e.clientX - parentRect.left;
     let cursorY =  e.clientY - parentRect.top;
 
-    // console.log(e.target.offsetHeight, Math.abs(e.target.getBoundingClientRect().top - e.clientY))
-
-    // Thelw na 3ekinaei apo to 0 kai na ftanei sto megethos tis eikonas (y)
-    // otan einai 0 einai 60% alla oso plhsiazei to katw meros ginetai 0
-
-    // to x na einai deksia 75 kai na ftanei -75 (75 h aktina tou magnifying glass)
-    // ara tha einai eite 0 eite 100
-    
-    
-    // const imageDiffX = e.target.parentElement.nextElementSibling.offsetWidth - imgRect.width;
-    // let backgroundPositionX = (Math.abs(imgRect.left - e.clientX) / imgRect.width) * imageDiffX;
-
     const imageDiffX = zoomedImageCordinates.width - imgRect.width;
     let backgroundPositionX = (Math.abs(imgRect.left - e.clientX) / imgRect.width) * imageDiffX;
-
 
     const imageDiffY = zoomedImageCordinates.height - imgRect.height;
     const backgroundPositionY = (Math.abs(imgRect.top - e.clientY) / imgRect.height) * imageDiffY;
     // let backgroundPositionY = 60 - (((Math.abs(imgRect.top - e.clientY) / imgRect.height) * 100) * 0.6);
 
-    setZoom({
-      ...zoom,
-      cursor: {
-        show: !lens.show,
-        x: cursorX,
-        y: cursorY
-      },
-      lens: {
-        ...lens,
-        imageDiffY: (e.target.parentElement.offsetHeight - e.target.offsetHeight) / 2,
-        imageDiffX: (parentRect.width - e.target.offsetWidth) / 2,
-        imageBgX: ((zoomedImageCordinates.realWidth - zoomedImageCordinates.width)) + ((imageDiffX / 2) - backgroundPositionX),
-        imageBgY: (((zoomedImageCordinates.realHeight - zoomedImageCordinates.height)) + ((imageDiffY / 2) - backgroundPositionY)),
-      }
-    })
-  }, 30
-)
-  const getCursorCordinatesCb = useCallback(e => getCursorCordinates(e), [getCursorCordinates])
+    console.log("Y: ", (e.target.parentElement.offsetHeight - e.target.offsetHeight) / 2, "X: ", (parentRect.width - e.target.offsetWidth) / 2, )
+
+    dispatch({type: "set_lens", payload: {cursor: {
+      show: !lens.show,
+      x: cursorX,
+      y: cursorY
+    },
+    lens: {
+      ...lens,
+      offsetY: (e.target.parentElement.offsetHeight - e.target.offsetHeight) / 2,
+      offsetX: (parentRect.width - e.target.offsetWidth) / 2,
+      imageBgX: ((zoomedImageCordinates.realWidth - zoomedImageCordinates.width) / 2) + ((imageDiffX / 2) - backgroundPositionX),
+      imageBgY: (((zoomedImageCordinates.realHeight - zoomedImageCordinates.height) / 2) + ((imageDiffY / 2) - backgroundPositionY)),
+    }}})
+  }
+  const getCursorCordinatesCb = useCallback(getCursorCordinates, [lens, zoomedImageCordinates])
 
   return (
     <Container {...restProps}>
@@ -134,28 +143,27 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
         <Controller className="right" onClick={() => changePhoto("right")}>
           <BsChevronRight />
         </Controller>
-      <Image onClick={() => setZoom({...zoom, cursor: {...cursor, show: !lens.show ? false : true}, lens: { ...lens, show: !lens.show }} )}>
-        <img src={currentItem.src} alt={currentItem.src} onMouseLeave={() => {
-          setTimeout(() => {
-            setZoom({
-              ...zoom,
-              lens: {
-                ...lens, show: false
-              },
-              cursor: {
-                ...cursor, show: false
-              }
-            })
-          }, 30)
-        }} 
-        onMouseMove={(e) => getCursorCordinatesCb(e)}
+      <Image>
+        <img 
+          src={currentItem.src} alt={currentItem.src} 
+          onMouseLeave={() => dispatch({type: "close_lens"})} 
+          onMouseMove={getCursorCordinatesCb}
+          onClick={() => dispatch({type: "toggle_lens"})}
         />
         <Pointer top={cursor.y} left={cursor.x} show={cursor.show}>
           <RxMagnifyingGlass />
         </Pointer>
       </Image>
       <ZoomContainer>
-          <ZoomedImage ref={zoomRef} cursorY={cursor.y} imageDiffX={lens.imageDiffY} imageDiffY={lens.imageDiffY} cursorX={cursor.x} show={lens.show} backgroundPositionX={lens.imageBgX} backgroundPositionY={lens.imageBgY} src={currentItem.src} />
+          <ZoomedImage ref={zoomRef} 
+           cursorY={cursor.y}
+           offsetX={lens.offsetX} 
+           offsetY={lens.offsetY} 
+           cursorX={cursor.x} 
+           show={lens.show} 
+           backgroundPositionX={lens.imageBgX} 
+           backgroundPositionY={lens.imageBgY} 
+           src={currentItem.src} />
       </ZoomContainer>
     </Container>
   )
@@ -184,13 +192,12 @@ const ZoomContainer = styled.div`
 
 const ZoomedImage = styled.img`
   /* opacity: 0.5; */
-  clip-path: circle(${props => props.show ? "150px" : 0} at ${props => `${(props.cursorX - props.imageDiffX ) + 75}px`} ${props => `${(props.cursorY - props.imageDiffY) + 75}px`});
+  clip-path: circle(${props => props.show ? "150px" : 0} at ${props => `${(props.cursorX) + 75}px`} ${props => `${(props.cursorY - props.offsetY) + 75}px`});
   max-width: 100%;
   max-height: 100%;
   height: auto;
   object-position: calc(${props => `${props.backgroundPositionX}px`}) calc(${props => `${props.backgroundPositionY}px`});
   object-fit: contain;
-  
 `;
 
 const Controller = styled.button`
