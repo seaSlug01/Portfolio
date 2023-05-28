@@ -4,7 +4,7 @@ import styled, {keyframes} from "styled-components";
 import {BsChevronRight, BsChevronLeft} from "react-icons/bs"
 import { RxMagnifyingGlass } from "react-icons/rx"
 import throttle from "lodash.throttle";
-import { getContainedSize } from '../utils/utils';
+import { getContainedSize, closePortalOnCertainViewPort } from '../utils/utils';
 
 
 
@@ -62,7 +62,7 @@ const setContainedSize = (img, dispatch) => {
     }})
 }
 
-function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restProps}) {
+function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProps}) {
   const {imageSize} = useSelector(state => state.mediaQuerySize)
   const zoomRef = useRef();
 
@@ -134,14 +134,14 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal,  ...restPro
   const getCursorCordinatesCb = useCallback(getCursorCordinates, [lens, zoomedImageCordinates])
 
   return (
-    <Container {...restProps}>
+    <Container {...restProps} onMouseUp={(e) => closePortalOnCertainViewPort(e, "975px", closePortal)}>
         <Controller className="left" onClick={() => changePhoto("left")}>
           <BsChevronLeft />
         </Controller>
         <Controller className="right" onClick={() => changePhoto("right")}>
           <BsChevronRight />
         </Controller>
-      <Image>
+      <Image onMouseUp={(e) => closePortalOnCertainViewPort(e, "975px", closePortal)}>
         <img 
           src={currentItem.src} alt={currentItem.src} 
           onMouseLeave={() => dispatch({type: "close_lens"})} 
@@ -188,13 +188,15 @@ const ZoomContainer = styled.div`
   }
 `;
 
-const ZoomedImage = styled.img`
+const ZoomedImage = styled.img.attrs(props => ({
+  style: {
+    visibility: props.show ? "visible" : "hidden"
+  },
+}))`
   --pointer-radius: 24px;
   --lens-radius: 75px;
   --lens-diameter: 150px;
-
-
-  /* opacity: 0.5; */
+  
   clip-path: circle(${props => props.show ? "var(--lens-diameter)" : 0} at calc(${props => `${(props.cursorX)}px`} + var(--lens-radius) - var(--pointer-radius)) calc(${props => `${(props.cursorY - props.offsetY)}px`} + var(--lens-radius) - var(--pointer-radius)));
   max-width: 100%;
   max-height: 100%;
@@ -221,6 +223,18 @@ const Controller = styled.button`
 
   &.right {
     right: -4vw;
+  }
+
+
+  @media (max-width: 975px) {
+    font-size: 3rem;
+    &.left {
+      left: 8%;
+    }
+
+    &.right {
+      right: 8%;
+    }
   }
 
   @media (max-width: 750px) {
@@ -278,15 +292,15 @@ const Pointer = styled.div.attrs(props => ({
   }
 `;
 
-const scaleUp = (top, left, scale) => keyframes`
+const scaleUp = (startY, endY, left, scale) => keyframes`
   from {
-    top: ${top}px;
+    top: ${startY}px;
     left: ${left}px;
     transform: scale(${scale});
     opacity: 1;
   } to {
     transform: translateX(-50%) scale(1);
-    top: 4.7rem;
+    top: ${endY};
     left: 50%;
   }
 `
@@ -302,6 +316,7 @@ const Image = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid white;
 
   img {
     object-fit: contain;
@@ -327,7 +342,7 @@ const Image = styled.div`
 const Container = styled.div`
   width: 880px;
   height: 80vh;
-  animation: ${props => scaleUp(props.cordinates.top, props.cordinates.left, props.cordinates.width / 800)} 0.5s ease-in-out forwards;
+  animation: ${props => scaleUp(props.cordinates.top, "4.7rem", props.cordinates.left, props.cordinates.width / 800)} 0.5s ease-in-out forwards;
   transform-origin: 0 0;
   background: rgb(62, 62, 62, 0.5);
   backdrop-filter: blur(2px);
@@ -343,6 +358,7 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     border-radius: none;
+    animation: ${props => scaleUp(props.cordinates.top, "0", props.cordinates.left, props.cordinates.width / 800)} 0.5s ease-in-out forwards;
   }
 `;
 

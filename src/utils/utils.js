@@ -34,3 +34,10 @@ export function getContainedSize(img) {
   }
   return [width, height, img.width, img.height]
 }
+
+
+export function closePortalOnCertainViewPort(e, viewport, closeFn) {
+  if(window.matchMedia(`(max-width: ${viewport})`).matches && e.target === e.currentTarget) {
+    closeFn()
+  }
+} 
