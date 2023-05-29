@@ -10,6 +10,7 @@ import Projects from './pages/Projects';
 import Project from './layouts/Project';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
+import Footer from "./components/Footer";
 import {getWindowWidth} from "./utils/mediaQuery.js";
 import { setTheme } from './store/themeSlice';
 
@@ -53,6 +54,7 @@ function App(props) {
         </Routes>
       </Wrapper>
       {portal.show && <Portal portal={portal} />}
+      <Footer />
     </div>
   )
 }

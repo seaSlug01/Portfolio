@@ -105,7 +105,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  height: 80vh;
+  height: calc(100vh - 5rem);
 
   ${Header} {
     margin-bottom: 6rem;

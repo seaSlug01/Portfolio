@@ -108,14 +108,15 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
   const getCursorCordinates = (e) => {
     const parentRect = e.target.parentElement.parentElement.getBoundingClientRect();
     const imgRect = e.target.getBoundingClientRect();
+
     let cursorX = e.clientX - parentRect.left;
     let cursorY =  e.clientY - parentRect.top;
 
     const imageDiffX = zoomedImageCordinates.width - imgRect.width;
-    let backgroundPositionX = (Math.abs(imgRect.left - e.clientX) / imgRect.width) * imageDiffX;
+    let backgroundPositionX = ((e.clientX - imgRect.left) / imgRect.width) * imageDiffX;
 
     const imageDiffY = zoomedImageCordinates.height - imgRect.height;
-    const backgroundPositionY = (Math.abs(imgRect.top - e.clientY) / imgRect.height) * imageDiffY;
+    const backgroundPositionY = ((e.clientY - imgRect.top) / imgRect.height) * imageDiffY;
 
 
     dispatch({type: "set_lens", payload: {cursor: {
@@ -125,8 +126,8 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
     },
     lens: {
       ...lens,
-      offsetY: (e.target.parentElement.offsetHeight - e.target.offsetHeight) / 2,
-      offsetX: (e.target.parentElement.offsetWidth - e.target.offsetWidth) / 2,
+      offsetY: (e.target.parentElement.offsetHeight - imgRect.height) / 2,
+      offsetX: (e.target.parentElement.offsetWidth - imgRect.width) / 2,
       imageBgX: ((zoomedImageCordinates.realWidth - zoomedImageCordinates.width) / 2) + ((imageDiffX / 2) - backgroundPositionX),
       imageBgY: (((zoomedImageCordinates.realHeight - zoomedImageCordinates.height) / 2) + ((imageDiffY / 2) - backgroundPositionY)),
     }}})
