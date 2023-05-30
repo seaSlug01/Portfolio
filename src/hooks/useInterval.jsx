@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import {useSelector} from "react-redux";
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
-  const [intervalId, setIntervalId] = useState(null);
+  const animationIsRunning = useSelector(state => state.wheelInterval.isRunning);
   // Remember the latest callback.
   useEffect(() => {
     savedCallback.current = callback;
@@ -13,15 +14,11 @@ function useInterval(callback, delay) {
     function tick() {
       savedCallback.current();
     }
-    if (delay !== null) {
+    if (delay !== null && animationIsRunning) {
       let id = setInterval(tick, delay);
-      setIntervalId(id);
       return () => clearInterval(id);
     }
-  }, [delay]);
-
-
-  return {id: intervalId}
+  }, [delay, animationIsRunning]);
 }
 
 export default useInterval

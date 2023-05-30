@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useDispatch} from "react-redux";
 import {togglePortal} from "../store/portalSlice";
 import ReactDom from 'react-dom';
@@ -10,6 +10,7 @@ import Project from '../layouts/Project';
 import Contact from '../pages/Contact';
 import Gallery from "../layouts/Gallery";
 import CloseIcon from "../components/CloseIcon";
+import { setIsRunning } from '../store/wheelIntervalSlice';
 
 const modalTargetComponents = {
   Project,
@@ -33,6 +34,14 @@ function Portal() {
       return <SelectedComponent closePortal={closePortal} className="portal-content" cordinates={cordinates} {...portal} onMouseDown={e => e.stopPropagation()}/>
     }
   }
+
+  useEffect(() => {
+    dispatch(setIsRunning(false))
+
+    return () => {
+      dispatch(setIsRunning(true))
+    }
+  }, [dispatch])
 
   return ReactDom.createPortal(
     <Container

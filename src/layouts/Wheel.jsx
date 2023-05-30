@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {togglePortal} from "../store/portalSlice";
 import {setSelectedProject} from "../store/projectsSlice";
@@ -12,7 +12,7 @@ function Wheel() {
   const {imageSize} = useSelector(state => state.mediaQuerySize);
   const theme = useSelector(state => state.theme.mode);
 
-  const animationSpeed = 1000;
+  const animationSpeed = 800;
   const totalItems = items.length;
   const totalFullRotations = Math.ceil(items.length / 4);
   const lastBatchLength = totalItems % 4 === 0 ? 4 : totalItems % 4;
@@ -82,7 +82,7 @@ function Wheel() {
 
           setTimeout(() => {
             setAnimated(true);
-          }, 20)
+          }, 50)
         } else {
           if((newPosition + 1 === totalFullRotations || newPosition === 0) && lastBatchLength !== 4) return;
 
@@ -98,6 +98,7 @@ function Wheel() {
   };
 
   useInterval(rotateWheel, 6000)
+
 
   return (
     <Container rotateDegress={rotationDegrees} animated={animated} animationSpeed={animationSpeed / 1000} theme={theme}>
