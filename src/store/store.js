@@ -4,7 +4,7 @@ import projectsSlice from "./projectsSlice";
 import flyingLettersSlice from "./flyingLettersSlice";
 import mediaQuerySlice from "./mediaQuerySlice";
 import themeSlice from "./themeSlice";
-import wheelIntervalSlice from "./wheelIntervalSlice";
+import setIntervalSlice from "./setIntervalSlice";
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +13,6 @@ export const store = configureStore({
         flyingLetters: flyingLettersSlice,
         mediaQuerySize: mediaQuerySlice,
         theme: themeSlice,
-        wheelInterval: wheelIntervalSlice
+        intervals: setIntervalSlice
     }
 })

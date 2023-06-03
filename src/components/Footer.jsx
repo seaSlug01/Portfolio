@@ -8,7 +8,7 @@ function Footer() {
   
   return (
     <Wrapper theme={theme}>
-      <p>&copy; {new Date().getFullYear()} Κωνσταντίνος Τζιανακούλης</p>
+      <p>Κωνσταντίνος Τζιανακούλης &copy; 2022-{new Date().getFullYear()} All Rights Reserved</p>
     </Wrapper>
   )
 }

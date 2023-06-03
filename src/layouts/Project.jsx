@@ -72,7 +72,7 @@ function Project({projectData, lazyLoad, ...rest}) {
             <ColorHeading key={index} className={project.heading.color || undefined} as="h2" theme={theme}>{field.text}</ColorHeading> : 
             <h2 key={index}>{field.text}</h2>
         case "a":
-          return <Visit key={index} href={field.href} target="_blank" className={project.heading.color || undefined}><span>{field.text}</span><BsChevronRight /></Visit>
+          return <Visit key={index} href={field.href} theme={theme} target="_blank" className={project.heading.color || undefined}><span>{field.text}</span><BsChevronRight /></Visit>
         default: 
           return "";
       }
@@ -97,7 +97,7 @@ function Project({projectData, lazyLoad, ...rest}) {
           {addDetails()}
 
           {(!projectData || id) && (
-            <Controls theme={id ? "light" : theme}>
+            <Controls theme={theme}>
               <LearnMoreButton as={id ? Link : "button"} to={`/projects/${getNextProjectId(-1)}`} iconPosition="left" icon={<RxChevronLeft />} onClick={(e) => changeProject(e, "prev")} text="Previous" />
               <LearnMoreButton as={id ? Link : "button"} to={`/projects/${getNextProjectId(1)}`} onClick={(e) => changeProject(e, "next")} text="Next" />
             </Controls>
@@ -118,12 +118,11 @@ const Wrapper = styled.div`
 const Visit = styled.a`
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-weight: 300;
-  color: #f3f3f3;
+  font-weight: ${props => props.theme === "dark" ? "300" : "400"};;
+  color: ${props => props.theme === "dark" ? "#f3f3f3" : "rgb(2, 2, 2)"};
   position: relative;
   margin-top: 2rem;
   align-self: flex-start;
-  transition: color 0.3s linear;
   display: flex;
   align-items: center;
 
@@ -138,7 +137,7 @@ const Visit = styled.a`
   }
 
   &:hover {
-    color: white;
+    color: ${props => props.theme === "dark" ? "white" : "black"};;
     
 
     span {
@@ -150,6 +149,7 @@ const Visit = styled.a`
     }
     &::after {
       width: 100%;
+      height: ${props => props.theme === "dark" ? "1px" : "2px"};
     }
 
     &.blue {
@@ -188,7 +188,7 @@ const Visit = styled.a`
     left: 0;
     height: 1px;
     width: 60%;
-    background: white;
+    background: ${props => props.theme === "dark" ? "white" : "black"};;
     transition: 0.3s linear all;
   }
 `;
@@ -290,7 +290,7 @@ const Controls = styled.div`
     font-weight: 300;
     letter-spacing: 2px;
     font-size: 0.9rem;
-    color: ${props => props.theme === "dark" ? "rgb(211 211 211)" : "black"};
+    color: ${props => props.theme === "dark" ? "rgb(211, 211, 211)" : "black"};
     font-weight: ${props => props.theme === "dark" ? "300" : "500"};
     transition: color 0.3s ease;
     margin-bottom: 1rem;

@@ -189,6 +189,7 @@ const Square = styled.div`
   &:nth-of-type(1) {
     padding-left: 10rem;
     align-items: center;
+    position: relative;
 
     @media (max-width: 1480px) {
       padding-left: 0;

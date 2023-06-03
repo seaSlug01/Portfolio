@@ -10,7 +10,7 @@ import Project from '../layouts/Project';
 import Contact from '../pages/Contact';
 import Gallery from "../layouts/Gallery";
 import CloseIcon from "../components/CloseIcon";
-import { setIsRunning } from '../store/wheelIntervalSlice';
+import { setIsRunning } from '../store/setIntervalSlice';
 
 const modalTargetComponents = {
   Project,
@@ -36,10 +36,10 @@ function Portal() {
   }
 
   useEffect(() => {
-    dispatch(setIsRunning(false))
+    dispatch(setIsRunning({isRunning: false, name: "wheel"}))
 
     return () => {
-      dispatch(setIsRunning(true))
+      dispatch(setIsRunning({isRunning: true, name: "wheel"}))
     }
   }, [dispatch])
 

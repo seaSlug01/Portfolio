@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {togglePortal} from "../store/portalSlice";
 import {setSelectedProject} from "../store/projectsSlice";
 import useInterval from "../hooks/useInterval";
 import styled from "styled-components";
 import Card from '../components/Card';
+import { setIsRunning } from '../store/setIntervalSlice';
 
 function Wheel() {
   const dispatch = useDispatch();
@@ -97,7 +98,20 @@ function Wheel() {
     }
   };
 
-  useInterval(rotateWheel, 6000)
+  useInterval(rotateWheel, "wheel", 6000)
+
+  useEffect(() => {
+    const visibilityChange = function() {
+      const isRunning = document.hidden ? false : true;
+      dispatch(setIsRunning({isRunning, name: "wheel"}))
+    }
+    
+    document.addEventListener("visibilitychange", visibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", visibilityChange)
+    }
+  }, [])
 
 
   return (
@@ -188,7 +202,7 @@ const Container = styled.ul`
   width: 43vw;
   height: 43vw;
   position: absolute;
-  transform: translateX(64%) rotate(${props => props.rotateDegress}deg);
+  transform: translateX(64.5%) rotate(${props => props.rotateDegress}deg);
   cursor: pointer;
   ${props => props.animated && `transition: ${props.animationSpeed}s ease-in-out all`};
 
