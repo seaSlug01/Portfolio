@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from "styled-components";
 
-function HorizontalRule({...props}) {
+function HorizontalRule({theme, ...props}) {
   return (
-    <HR {...props}>
+    <HR theme={theme} {...props}>
       <span></span>
     </HR>
   )

@@ -274,7 +274,7 @@ const scaleUp = (top, left, scale) => keyframes`
 const Controls = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 8rem;
+  margin-top: auto;
 
   svg {
     font-size: 1rem;
@@ -294,6 +294,7 @@ const Controls = styled.div`
     font-weight: ${props => props.theme === "dark" ? "300" : "500"};
     transition: color 0.3s ease;
     margin-bottom: 1rem;
+    margin-top: 8rem;
     
     &:hover {
       

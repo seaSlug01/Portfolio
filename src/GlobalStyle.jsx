@@ -87,6 +87,69 @@ img {
   }
 }
 
+.responsive-padding {
+  padding-inline: 10rem;
+
+  @media (max-width: 1550px) {
+    padding-inline: 8vw;
+  }
+
+  @media (max-width: 800px) {
+    padding-inline: 1rem;
+  }
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+
+.gradient {
+  position: relative;
+  
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.blue {
+    &::after {
+      background: linear-gradient(to top, rgb(0, 132, 255, ${props => props.theme === "dark" ? "0.6" : "0.8"}), transparent);
+    }
+  }
+
+  &.violet {
+    &::after {
+      background: linear-gradient(to top, rgba(255, 44, 255, ${props => props.theme === "dark" ? 0.37 : 0.57}), transparent);
+    }
+  }
+
+  &.orange {
+    &::after {
+      background: linear-gradient(to top, rgba(255, 72, 0, ${props => props.theme === "dark" ? 0.298 : 0.55}), transparent);
+    }
+  }
+
+  &.green {
+    &::after {
+
+    }
+  }
+}
+
 `;
 
 export default GlobalStyle;

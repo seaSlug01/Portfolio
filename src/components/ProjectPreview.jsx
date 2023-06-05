@@ -23,7 +23,7 @@ function ProjectPreview({project, theme, ...props}) {
 
   return (
     <Container {...props}>
-      <Image className={project.heading.color} as={Link} to={`/projects/${project.id}`} theme={theme}>
+      <Image className={`gradient ${project.heading.color}`} as={Link} to={`/projects/${project.id}`} theme={theme}>
         <LazyLoad>
           <img src={project.images[0].src.medium} alt={project.images[0].src.medium} />
         </LazyLoad>
@@ -140,12 +140,6 @@ const Image = styled.div`
   }
 
   &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     transition: 0.5s ease opacity;
     opacity: 1;
     pointer-events: none;

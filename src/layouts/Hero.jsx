@@ -7,6 +7,8 @@ import ProjectPreview from '../components/ProjectPreview';
 import SubmitButton from "../components/SubmitButton";
 import { togglePortal } from '../store/portalSlice';
 import {BsFillPeopleFill} from "react-icons/bs";
+import Accordion from './Accordion';
+import HorizontalRule from '../components/HorizontalRule';
 
 function Hero() {
   const dispatch = useDispatch();
@@ -38,9 +40,15 @@ function Hero() {
       </Section>
       {
         mediaSize >= 4 && (
-          <div className="m-block m-block--5">
-            <Slider />
-          </div>
+          <>
+            <div className="m-block m-block--5">
+              <Slider />
+            </div>
+            <div className="responsive-padding d-flex justify-center align-center">
+              <HorizontalRule theme={theme} />
+            </div>
+            <Accordion header="Projects" />
+          </>
         )
       }
     </>

@@ -29,7 +29,9 @@ function App(props) {
         prev: null
       }))
     }
-  }, [])
+
+    
+  }, [dispatch])
 
   useEffect(() => {
     
@@ -39,6 +41,11 @@ function App(props) {
       window.removeEventListener("resize", evt)
     }
   }, [dispatchSizeFn])
+  
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
   
   return (
     <div className="App">

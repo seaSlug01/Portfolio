@@ -16,7 +16,7 @@ const intervalSlice = createSlice({
       return state;
     },
     addInterval: (state, action) => {
-      if(state[action.payload.name]) return console.error("This interval name already exists, if you're in development mode, React.StrictMode causes double rendering to identify errors, but if you're in production, this message may warn you that you're overwriting an existing setInterval.")
+      if(state[action.payload.name]) return console.error("This interval name already exists, if you're in development mode, React.StrictMode causes double rendering to identify errors, but if you're in production, this message may warn you that you're overwriting an existing setInterval. In either case, please make sure there are no unwanted re-renderings or duplicate intervals.")
 
       state[action.payload.name] = { isRunning: true, delay: action.payload.delay}
       return state;
