@@ -10,7 +10,7 @@ function AccordionItem({project, theme, expanded, setExpand}) {
   });
 
   const {headingHeight, bodyHeight} = height;
-  const animationSpeed = 1;
+  const animationSpeed = 0.75;
 
   useEffect(() => {
     if(ref.current) {
@@ -19,6 +19,8 @@ function AccordionItem({project, theme, expanded, setExpand}) {
         bodyHeight: ref.current.querySelector(".accordion__body").offsetHeight,
       });
     }
+
+    console.log()
   }, [])
 
 
@@ -26,7 +28,7 @@ function AccordionItem({project, theme, expanded, setExpand}) {
     <Wrapper onClick={(e) => e.target.tagName !== "a" && setExpand(expanded ? null : project.id)} expanded={expanded} bodyHeight={bodyHeight} headingHeight={headingHeight} animationSpeed={animationSpeed} theme={theme}>
       <Container ref={ref}>
         <Header className="accordion__header" expanded={expanded} theme={theme}>
-          <Image theme={theme} className={`gradient ${project.heading.color}`} expanded={expanded} transitionSpeed={(1 - (bodyHeight + headingHeight) / (bodyHeight + headingHeight + 320)) * animationSpeed} delay={expanded ? 0 : ((bodyHeight) / (bodyHeight + headingHeight + 320)) * animationSpeed}>
+          <Image theme={theme} className={`gradient ${project.heading.color}`} expanded={expanded} transitionSpeed={(1 - (bodyHeight + headingHeight) / (bodyHeight + headingHeight + 320)) * animationSpeed} delay={expanded ? 0 : ((bodyHeight + headingHeight) / (bodyHeight + headingHeight + 320)) * (animationSpeed / 2)}>
             <img src={project.images[0].src.medium} alt={project.images[0].src.medium} />
           </Image>
           <h2 className={project.heading.color}>{project.heading.text}</h2>
