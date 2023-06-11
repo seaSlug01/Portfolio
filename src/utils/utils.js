@@ -25,14 +25,15 @@ export const getEveryProjectsImages = () => {
 }
 
 export function getContainedSize(img) {
-  var ratio = img.naturalWidth/img.naturalHeight
-  var width = img.height*ratio
-  var height = img.height
-  if (width > img.width) {
-    width = img.width
-    height = img.width/ratio
-  }
-  return [width, height, img.width, img.height]
+    var ratio = img.naturalWidth/img.naturalHeight
+    var width = img.height*ratio
+    var height = img.height
+    if (width > img.width) {
+      
+      width = img.width
+      height = img.width/ratio
+    }
+    return [width, height, img.width, img.height]
 }
 
 

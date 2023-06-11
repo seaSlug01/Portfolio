@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import { useSelector} from "react-redux";
 import AccordionItem from '../components/AccordionItem';
@@ -16,7 +17,9 @@ function Accordion({header}) {
   return (
     <Wrapper>
       <Container theme={theme}>
-        <h1>{header}</h1>
+        <Link to="/projects">
+          <h1>{header}</h1>
+        </Link>
         {projects.map((p, idx) => (<AccordionItem key={p.id} project={p} theme={theme} expanded={p.id === expanded} setExpand={expand} />))}
       </Container>
     </Wrapper>
@@ -38,12 +41,23 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
+  gap: 2rem;
 
   h1 {
     font-weight: 300;
     color: ${props => props.theme === "dark" ? "rgb(227, 227, 227)" : "black"};
-    text-transform: uppercase;
     margin-bottom: 1rem;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      height: 4px;
+      width: 60%;
+      background: rgb(75, 168, 255);
+      border-radius: 5px;
+    }
   }
 `;

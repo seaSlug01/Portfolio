@@ -12,7 +12,7 @@ function Card({image, heading, details, theme}) {
       <div className="text">
         <ColorHeading className={heading.color || randomHeadingColor()} theme={theme}>{heading.text}</ColorHeading>
           <p>{details.text}</p>
-        <LearnMoreButton text="Learn more" />
+        <LearnMoreButton text="Learn more" tabIndex={-1} />
       </div>
       
     </Container>

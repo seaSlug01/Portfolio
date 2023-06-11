@@ -8,6 +8,7 @@ function AccordionItem({project, theme, expanded, setExpand}) {
     headingHeight: 0,
     bodyHeight: 0,
   });
+  const [isFocused, setIsFocused] = useState(false);
 
   const {headingHeight, bodyHeight} = height;
   const animationSpeed = 1;
@@ -23,9 +24,15 @@ function AccordionItem({project, theme, expanded, setExpand}) {
     console.log()
   }, [])
 
+  function toggle(e) {
+    e.target.tagName !== "a" && setExpand(expanded ? null : project.id)
+  }
+
 
   return (
-    <Wrapper onClick={(e) => e.target.tagName !== "a" && setExpand(expanded ? null : project.id)} expanded={expanded} bodyHeight={bodyHeight} headingHeight={headingHeight} animationSpeed={animationSpeed} theme={theme}>
+    <Wrapper onClick={toggle} expanded={expanded} bodyHeight={bodyHeight} headingHeight={headingHeight} animationSpeed={animationSpeed} theme={theme} tabIndex={expanded ? -1 : 0} onKeyDown={(e) => {
+      e.key === "Enter" && toggle(e)
+    }} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}>
       <Container ref={ref}>
         <Header className="accordion__header" expanded={expanded} theme={theme}>
           <Image theme={theme} className={`gradient ${project.heading.color}`} expanded={expanded} transitionSpeed={(1 - (bodyHeight + headingHeight) / (bodyHeight + headingHeight + 320)) * animationSpeed} delay={expanded ? 0 : ((bodyHeight - headingHeight) / (bodyHeight + headingHeight + 320)) * (animationSpeed)}>
@@ -36,7 +43,7 @@ function AccordionItem({project, theme, expanded, setExpand}) {
        
        <Body className="accordion__body" theme={theme}>
           <p>{project.textFields[0].text}</p>
-          <LearnMoreButton text="Learn More" as="a" href={`/projects/${project.id}`}/>
+          <LearnMoreButton text="Learn More" as="a" href={`/projects/${project.id}`} tabIndex={expanded ? 0 : -1} />
         </Body>
       </Container>
     </Wrapper>
@@ -70,6 +77,8 @@ const Header = styled.div`
     padding: 1rem;
     font-weight: ${props => props.theme === "dark" ? 200 : 300};
     transition: color 1s ease;
+    background: ${props => props.theme === "dark" ? "rgb(64, 64, 64)" : ""};
+    border-bottom: thin solid ${props => props.expanded ? "grey" : "transparent"};
 
     &.blue {
       color: ${props => props.expanded ? "rgb(142 233 255)" : "rgb(227, 227, 227)"};
@@ -145,10 +154,17 @@ const Wrapper = styled.div`
   height: ${props => props.headingHeight + 96};
   animation: ${props => props.expanded ? expand(`${props.headingHeight + 96}px`, `${props.headingHeight + 320 + props.bodyHeight}px`) : shrink(`${props.headingHeight + 320 + props.bodyHeight}px`, `${props.headingHeight + 96}px`)} ${props => `${props.animationSpeed}s`} ease forwards;
   box-shadow: 0px 5px 10px ${props => props.theme === "dark" ? "rgb(32, 32, 32)" : "rgb(139, 139, 139)"}; 
+  transition: 0.6s transform ease;
   
 
   background: ${props => props.theme === "dark" ? "transparent" : "rgb(53 53 53)"};
-  background: 
-    /* background: rgb(64, 64, 64); */
+  /* background: rgb(64, 64, 64); */
+  &:active {
+    outline: 1px solid ${props => props.theme === "dark" ? "silver" : "black"};
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 
 `;

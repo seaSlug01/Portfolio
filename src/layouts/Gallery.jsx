@@ -12,10 +12,10 @@ import { getContainedSize, closePortalOnCertainViewPort } from '../utils/utils';
 const initialState = {
   lens: {
     show: false,
-    imageDiffY: 0,
-    imageDiffX: 0,
-    x: 0,
-    y: 0
+    offsetY: 0,
+    offsetX: 0,
+    imageBgX: 0,
+    imageBgY: 0,
   },
   cursor: {
     show: false,
@@ -26,7 +26,8 @@ const initialState = {
     width: 0,
     height: 0,
     realWidth: 0,
-    realHeight: 0
+    realHeight: 0,
+    imgSrc: ""
   }
 };
 
@@ -39,9 +40,11 @@ function reducer(state, action) {
     case 'close_lens':
       return {...state, lens: {...state.lens, show: false}, cursor: {...state.cursor, show: false}}
     case 'set_zoomed_image_cordinates':
+      console.log(action.payload)
       return {
         ...state, 
-        zoomedImageCordinates: action.payload
+        zoomedImageCordinates: action.payload,
+        
       }
     default:
       return state
@@ -50,16 +53,19 @@ function reducer(state, action) {
 
 const setContainedSize = (img, dispatch) => {
     if(!img) return;
-    const containedSize = getContainedSize(img);
 
-    console.log("Contained size triggers")
+    img.onload = function() {
+      const containedSize = getContainedSize(img);
 
-    dispatch({type: "set_zoomed_image_cordinates", payload: {
-      width: containedSize[0],
-      height: containedSize[1],
-      realWidth: containedSize[2],
-      realHeight: containedSize[3],
-    }})
+      dispatch({type: "set_zoomed_image_cordinates", payload: {
+        width: containedSize[0],
+        height: containedSize[1],
+        realWidth: containedSize[2],
+        realHeight: containedSize[3],
+        imgSrc: img.src
+      }})
+    }
+    
 }
 
 function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProps}) {
@@ -117,9 +123,9 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
 
     const imageDiffY = zoomedImageCordinates.height - imgRect.height;
     const backgroundPositionY = ((e.clientY - imgRect.top) / imgRect.height) * imageDiffY;
-
-
-    dispatch({type: "set_lens", payload: {cursor: {
+    
+    dispatch({type: "set_lens", payload: {
+    cursor: {
       show: !lens.show,
       x: cursorX,
       y: cursorY
@@ -162,7 +168,8 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
            show={lens.show} 
            backgroundPositionX={lens.imageBgX} 
            backgroundPositionY={lens.imageBgY} 
-           src={currentItem.src} />
+           src={currentItem.src} 
+           />
       </ZoomContainer>
     </Container>
   )
