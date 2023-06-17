@@ -354,7 +354,7 @@ const Image = styled.div`
 const Container = styled.div`
   width: 945px;
   height: 90vh;
-  animation: ${props => scaleUp(props.cordinates.top, "5vh", props.cordinates.left, props.cordinates.width / 800)} 0.5s ease-in-out forwards;
+  animation: ${props => scaleUp(props.cordinates.top, "5vh", props.cordinates.left, props.cordinates.width / 945)} 0.5s ease-in-out forwards;
   transform-origin: 0 0;
   background: rgb(62, 62, 62, 0.5);
   backdrop-filter: blur(2px);
@@ -370,7 +370,7 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     border-radius: none;
-    animation: ${props => scaleUp(props.cordinates.top, "0", props.cordinates.left, props.cordinates.width / 800)} 0.5s ease-in-out forwards;
+    animation: ${props => scaleUp(props.cordinates.top, "0", props.cordinates.left, props.cordinates.width / 945)} 0.5s ease-in-out forwards;
   }
 `;
 

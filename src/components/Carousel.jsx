@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from "styled-components";
 import {RxCaretRight, RxCaretLeft} from "react-icons/rx";
 import LazyLoad from 'react-lazy-load';
+import { togglePortal } from '../store/portalSlice';
 
 const activeOutlineColors = {
   blue: "#7099f9",
@@ -11,12 +12,13 @@ const activeOutlineColors = {
   green: "#7eab6b"
 }
 
-function Carousel({images, isSmall, color, lazyLoad, theme}) {
+function Carousel({images, projectId, isSmall, color, lazyLoad, theme}) {
+  const dispatch = useDispatch();
   const {imageSize, mediaSize} = useSelector(state => state.mediaQuerySize)
-  const [selectedImage, setSelectedImage] = useState({src: images[0].src[imageSize] })
+  const [selectedImage, setSelectedImage] = useState({src: images[0].src[imageSize], index: 0 })
 
   useEffect(() => {
-    setSelectedImage({src: images[0].src[imageSize], type: images[0].type})
+    setSelectedImage({src: images[0].src[imageSize], type: images[0].type, index: 0})
   }, [imageSize, setSelectedImage, images])
  
   const [previousSelectedImage, setPreviousSelectedImage] = useState({});
@@ -63,23 +65,31 @@ function Carousel({images, isSmall, color, lazyLoad, theme}) {
     setPreviousSelectedImage({...selectedImage, styles: prevStyles})
 
     const currentSelectedImage = images[targetImageIndex];
-    setSelectedImage({src: currentSelectedImage.src[imageSize], type: currentSelectedImage.type, styles: currentStyles});
+    setSelectedImage({src: currentSelectedImage.src[imageSize], type: currentSelectedImage.type, styles: currentStyles, index: targetImageIndex});
     
 
     setTimeout(() => {
       setPreviousSelectedImage({})
-      setSelectedImage({src: currentSelectedImage.src[imageSize], type: currentSelectedImage.type, styles: {left: 0}})
+      setSelectedImage({...selectedImage, src: currentSelectedImage.src[imageSize], type: currentSelectedImage.type, styles: {left: 0}})
     }, 750)
   }
 
   function loadPicture() {
     if(lazyLoad) {
       return <LazyLoad offset={300}>
-                <Picture src={selectedImage.src} style={selectedImage.styles} objectFit={selectedImage.type} />
+                <Picture src={selectedImage.src} style={selectedImage.styles} objectFit={selectedImage.type} onClick={displayGallery}/>
             </LazyLoad>
     }
 
-    return <Picture src={selectedImage.src} style={selectedImage.styles} objectFit={selectedImage.type} />
+    return <Picture src={selectedImage.src} style={selectedImage.styles} objectFit={selectedImage.type} onClick={displayGallery} />
+  }
+
+  function displayGallery(e) {
+    if(isSmall) return;
+    const {left, top, width, height} = e.target.getBoundingClientRect();
+
+
+    dispatch(togglePortal({show: true, component: "Gallery", cordinates: {left, top, width, height}, projectId, imageSRCs: images[selectedImage.index].src, gallery: images.map(imgEl => ({images: imgEl.src, projectId})), index: selectedImage.index }))
   }
 
   return (

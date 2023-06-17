@@ -84,7 +84,7 @@ function Project({projectData, lazyLoad, ...rest}) {
   return (
     <Container {...rest} theme={theme}>
       <Wrapper className={`${projectData ? undefined : "modal-wrapper"}`}>
-        <Carousel images={project.images} isSmall={projectData || id ? false : true} color={project.heading.color} lazyLoad={lazyLoad} theme={theme} />
+        <Carousel images={project.images} isSmall={projectData || id ? false : true} color={project.heading.color} lazyLoad={lazyLoad} theme={theme} projectId={project.id} />
         <Details>
           <ColorHeading className={project.heading.color || randomHeadingColor()} theme={theme}>
             {project.href 
