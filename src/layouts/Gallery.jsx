@@ -123,6 +123,10 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
 
     const imageDiffY = zoomedImageCordinates.height - imgRect.height;
     const backgroundPositionY = ((e.clientY - imgRect.top) / imgRect.height) * imageDiffY;
+
+    // Na dw poia eikona xrhsimopoeitai - btw, to eixes katalavei apo prin :p
+
+    console.log((e.target.parentElement.offsetHeight - imgRect.height) / 2, (e.target.parentElement.offsetWidth - imgRect.width) / 2)
     
     dispatch({type: "set_lens", payload: {
     cursor: {
@@ -182,8 +186,8 @@ const ZoomContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 110%;
-  height: 120%;
+  width: 120%;
+  height: 130%;
   pointer-events: none;
   filter: drop-shadow(0 0 10px rgba(50, 50, 0, 0.5));
   display: flex;
@@ -202,10 +206,10 @@ const ZoomedImage = styled.img.attrs(props => ({
   },
 }))`
   --pointer-radius: 24px;
-  --lens-radius: 75px;
-  --lens-diameter: 150px;
+  --lens-radius: 95px;
+  --lens-diameter: 190px;
   
-  clip-path: circle(${props => props.show ? "var(--lens-diameter)" : 0} at calc(${props => `${(props.cursorX)}px`} + var(--lens-radius) - var(--pointer-radius)) calc(${props => `${(props.cursorY - props.offsetY)}px`} + var(--lens-radius) - var(--pointer-radius)));
+  clip-path: circle(${props => props.show ? "var(--lens-diameter)" : 0} at calc(${props => `${(props.cursorX)}px`} + var(--lens-radius) + var(--pointer-radius)) calc(${props => `${(props.cursorY - props.offsetY)}px`} + var(--lens-radius) + var(--pointer-radius)));
   max-width: 100%;
   max-height: 100%;
   height: auto;
@@ -320,8 +324,8 @@ const Image = styled.div`
   -khtml-user-select: none;
   -webkit-user-select: none;
   -o-user-select: none;
-  width: 70%;
-  height: 80%;
+  width: 80%;
+  height: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -348,9 +352,9 @@ const Image = styled.div`
 `;
 
 const Container = styled.div`
-  width: 880px;
-  height: 80vh;
-  animation: ${props => scaleUp(props.cordinates.top, "4.7rem", props.cordinates.left, props.cordinates.width / 800)} 0.5s ease-in-out forwards;
+  width: 945px;
+  height: 90vh;
+  animation: ${props => scaleUp(props.cordinates.top, "5vh", props.cordinates.left, props.cordinates.width / 800)} 0.5s ease-in-out forwards;
   transform-origin: 0 0;
   background: rgb(62, 62, 62, 0.5);
   backdrop-filter: blur(2px);
