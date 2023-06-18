@@ -10,6 +10,7 @@ import { getContainedSize, closePortalOnCertainViewPort } from '../utils/utils';
 
 
 const initialState = {
+  loading: true,
   lens: {
     show: false,
     offsetY: 0,
@@ -22,53 +23,74 @@ const initialState = {
     x: 0,
     y: 0,
   },
-  zoomedImageCordinates: {
-    width: 0,
-    height: 0,
-    realWidth: 0,
-    realHeight: 0,
-    imgSrc: ""
+  coordinates: {
+    zoomedImage: {
+      containedWidth: 0,
+      containedHeight: 0,
+      width: 0,
+      height: 0
+    },
+    baseImage: {
+      containedWidth: 0,
+      containedHeight: 0,
+      width: 0,
+      height: 0,
+      top: 0,
+      left: 0
+    }
   }
 };
 
 function reducer(state, action) {
   switch (action.type) {
+    case 'component_animation_over':
+      return {...state, loading: false}
+    case 'set_cursor': 
+      return {...state, cursor: action.payload}
     case 'set_lens':
-      return {...state, ...action.payload};
+      return {...state, lens: action.payload};
     case 'toggle_lens':
       return {...state, cursor: {...state.cursor, show: !state.lens.show ? false : true}, lens: {...state.lens, show: !state.lens.show}};
     case 'close_lens':
       return {...state, lens: {...state.lens, show: false}, cursor: {...state.cursor, show: false}}
-    case 'set_zoomed_image_cordinates':
+    case 'set_img_cordinates':
       console.log(action.payload)
       return {
         ...state, 
-        zoomedImageCordinates: action.payload,
-        
+        coordinates: action.payload 
       }
     default:
       return state
   }
 }
 
-const setContainedSize = (img, dispatch) => {
-    if(!img) return;
-
-    img.onload = function() {
-      const containedSize = getContainedSize(img);
-
-      dispatch({type: "set_zoomed_image_cordinates", payload: {
-        width: containedSize[0],
-        height: containedSize[1],
-        realWidth: containedSize[2],
-        realHeight: containedSize[3],
-        imgSrc: img.src
+const setContainedSize = async (img, dispatch, loading) => {
+  if(!img) return;
+  
+  return new Promise((resolve, reject) => {
+    img.onload = () => {
+    const zoomCords = getContainedSize(img);
+    return setTimeout(() => {
+      loading.wait && dispatch({type: "component_animation_over"})
+      resolve(zoomCords)
+    }, loading.wait ? loading.loadingTime : 0)
+    }
+    img.onerror = reject
+  }).then(zoomCords => {
+    const load = () => {
+      const baseCords = getContainedSize(img.parentElement.previousElementSibling.querySelector("img"));
+      const {top, left} = img.parentElement.previousElementSibling.querySelector("img").getBoundingClientRect();
+      dispatch({type: "set_img_cordinates", payload: {
+        zoomedImage: zoomCords,
+        baseImage: {...baseCords, top, left}
       }})
     }
-    
+    img.parentElement.previousElementSibling.querySelector("img").onload = load();
+  }) 
 }
 
 function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProps}) {
+  const animationSpeed = 500;
   const {imageSize} = useSelector(state => state.mediaQuerySize)
   const zoomRef = useRef();
 
@@ -80,26 +102,27 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
 
   const [zoom, dispatch] = useReducer(reducer, initialState);
 
-  const {cursor, lens, zoomedImageCordinates} = zoom;
+  const {cursor, lens, coordinates: {zoomedImage, baseImage}, loading} = zoom;
+
+  useEffect( () => {
+    setContainedSize(zoomRef.current, dispatch, {wait: loading, loadingTime: animationSpeed});
+  }, [currentItem, loading])
 
   useEffect(() => {
-    setContainedSize(zoomRef.current, dispatch);
-  }, [currentItem])
-
-  useEffect(() => {
-
-    const throttled = throttle(() => setContainedSize(zoomRef.current, dispatch), 1000)
+    const throttled = throttle(() => setContainedSize(zoomRef.current, dispatch, {wait: loading, loadingAnimationSpeed: animationSpeed}), 1000)
     const resize = window.addEventListener("resize", throttled);
 
     return () => {
       window.removeEventListener("resize", resize);
     }
-  }, [])
+  }, [loading])
 
 
   function changePhoto(direction) {
-    var targetIndex = direction === "right" ? currentItem.index + 1 : currentItem.index - 1;
-    if(targetIndex === - 1 || targetIndex > gallery.length - 1) return closePortal();
+    let targetIndex = direction === "right" ? currentItem.index + 1 : currentItem.index - 1;
+
+    if(targetIndex === -1) targetIndex = gallery.length - 1;
+    if(targetIndex > gallery.length - 1) targetIndex = 0;
 
     var nextGalleryItem = gallery[targetIndex];
 
@@ -111,41 +134,47 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
 
   }
 
+  const adjustLens = useCallback(function adjuctLens(e) {
+    const imageDiffX = zoomedImage.containedWidth - baseImage.containedWidth;
+    let backgroundPositionX = ((cursor.clientX - baseImage.left) / baseImage.width) * imageDiffX;
+
+    const imageDiffY = zoomedImage.containedHeight - baseImage.containedHeight;
+    const backgroundPositionY = ((cursor.clientY - baseImage.top) / baseImage.height) * imageDiffY;
+
+    dispatch({type: 'set_lens', payload: {
+      ...lens,
+      offsetY: (e.target.parentElement.offsetHeight - baseImage.height) / 2,
+      offsetX: (e.target.parentElement.offsetWidth - baseImage.width) / 2,
+      imageBgX: ((zoomedImage.width - zoomedImage.containedWidth) / 2) + ((imageDiffX / 2) - backgroundPositionX),
+      imageBgY: (((zoomedImage.height - zoomedImage.containedHeight) / 2) + ((imageDiffY / 2) - backgroundPositionY)),
+    }})
+  }, [baseImage, zoomedImage, cursor, lens])
+
   const getCursorCordinates = (e) => {
     const parentRect = e.target.parentElement.parentElement.getBoundingClientRect();
-    const imgRect = e.target.getBoundingClientRect();
 
     let cursorX = e.clientX - parentRect.left;
     let cursorY =  e.clientY - parentRect.top;
 
-    const imageDiffX = zoomedImageCordinates.width - imgRect.width;
-    let backgroundPositionX = ((e.clientX - imgRect.left) / imgRect.width) * imageDiffX;
 
-    const imageDiffY = zoomedImageCordinates.height - imgRect.height;
-    const backgroundPositionY = ((e.clientY - imgRect.top) / imgRect.height) * imageDiffY;
-
-    // Na dw poia eikona xrhsimopoeitai - btw, to eixes katalavei apo prin :p
-
-    console.log((e.target.parentElement.offsetHeight - imgRect.height) / 2, (e.target.parentElement.offsetWidth - imgRect.width) / 2)
-    
-    dispatch({type: "set_lens", payload: {
-    cursor: {
+    dispatch({type: 'set_cursor', payload: {
       show: !lens.show,
       x: cursorX,
-      y: cursorY
-    },
-    lens: {
-      ...lens,
-      offsetY: (e.target.parentElement.offsetHeight - imgRect.height) / 2,
-      offsetX: (e.target.parentElement.offsetWidth - imgRect.width) / 2,
-      imageBgX: ((zoomedImageCordinates.realWidth - zoomedImageCordinates.width) / 2) + ((imageDiffX / 2) - backgroundPositionX),
-      imageBgY: (((zoomedImageCordinates.realHeight - zoomedImageCordinates.height) / 2) + ((imageDiffY / 2) - backgroundPositionY)),
-    }}})
+      y: cursorY,
+      clientX: e.clientX,
+      clientY: e.clientY
+    }})
+
+    if(lens.show) {
+      adjustLens(e);
+    }
+      
   }
-  const getCursorCordinatesCb = useCallback(getCursorCordinates, [lens, zoomedImageCordinates])
+
+  const getCursorCordinatesCb = useCallback(getCursorCordinates, [lens, adjustLens])
 
   return (
-    <Container {...restProps} onMouseUp={(e) => closePortalOnCertainViewPort(e, "975px", closePortal)}>
+    <Container {...restProps} onMouseUp={(e) => closePortalOnCertainViewPort(e, "975px", closePortal)} screenSize={window.innerWidth || document.body.clientWidth} animationSpeed={animationSpeed}>
         <Controller className="left" onClick={() => changePhoto("left")}>
           <BsChevronLeft />
         </Controller>
@@ -157,7 +186,10 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
           src={currentItem.src} alt={currentItem.src} 
           onMouseLeave={() => dispatch({type: "close_lens"})} 
           onMouseMove={getCursorCordinatesCb}
-          onClick={() => dispatch({type: "toggle_lens"})}
+          onClick={(e) => {
+            adjustLens(e)
+            dispatch({type: "toggle_lens"})
+          }}
         />
         <Pointer top={cursor.y} left={cursor.x} show={cursor.show}>
           <RxMagnifyingGlass />
@@ -216,7 +248,6 @@ const ZoomedImage = styled.img.attrs(props => ({
   object-fit: contain;
   object-position: ${props => `${props.backgroundPositionX}px`} ${props => `${props.backgroundPositionY}px`};
   
-
   @media (max-width: 975px) {
     --pointer-radius: 20px;
   }
@@ -354,7 +385,7 @@ const Image = styled.div`
 const Container = styled.div`
   width: 945px;
   height: 90vh;
-  animation: ${props => scaleUp(props.cordinates.top, "5vh", props.cordinates.left, props.cordinates.width / 945)} 0.5s ease-in-out forwards;
+  animation: ${props => scaleUp(props.cordinates.top, "5vh", props.cordinates.left, props.cordinates.width / 945)} ${props => `${props.animationSpeed}ms`} ease-in-out forwards;
   transform-origin: 0 0;
   background: rgb(62, 62, 62, 0.5);
   backdrop-filter: blur(2px);
@@ -370,7 +401,7 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     border-radius: none;
-    animation: ${props => scaleUp(props.cordinates.top, "0", props.cordinates.left, props.cordinates.width / 945)} 0.5s ease-in-out forwards;
+    animation: ${props => scaleUp(props.cordinates.top, "0", props.cordinates.left, props.cordinates.width / props.screenSize)} ${props => `${props.animationSpeed}ms`} ease-in-out forwards;
   }
 `;
 

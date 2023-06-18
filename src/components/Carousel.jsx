@@ -70,7 +70,7 @@ function Carousel({images, projectId, isSmall, color, lazyLoad, theme}) {
 
     setTimeout(() => {
       setPreviousSelectedImage({})
-      setSelectedImage({...selectedImage, src: currentSelectedImage.src[imageSize], type: currentSelectedImage.type, styles: {left: 0}})
+      setSelectedImage({...selectedImage, src: currentSelectedImage.src[imageSize], type: currentSelectedImage.type, styles: {left: 0}, index: targetImageIndex })
     }, 750)
   }
 
@@ -207,6 +207,8 @@ const Picture = styled.img`
   position: absolute;
   top: 0;
   left: 0;
+  cursor: pointer; 
+
 
   @keyframes slideLeft {
     from {
