@@ -182,14 +182,16 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
           <BsChevronRight />
         </Controller>
       <Image onMouseUp={(e) => closePortalOnCertainViewPort(e, "975px", closePortal)}>
-        <img 
-          src={currentItem.src} alt={currentItem.src} 
+        <img src={currentItem.src} alt={currentItem.src} />
+        <Hoverable 
+          width={baseImage.containedWidth} 
+          height={baseImage.containedHeight} 
           onMouseLeave={() => dispatch({type: "close_lens"})} 
           onMouseMove={getCursorCordinatesCb}
           onClick={(e) => {
             adjustLens(e)
             dispatch({type: "toggle_lens"})
-          }}
+          }} 
         />
         <Pointer top={cursor.y} left={cursor.x} show={cursor.show}>
           <RxMagnifyingGlass />
@@ -212,6 +214,21 @@ function Gallery({projectId, imageSRCs, index, gallery, closePortal, ...restProp
 }
 
 export default Gallery
+
+const Hoverable = styled.div`
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  cursor: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: ${props => `${props.width}px`};
+  height: ${props => `${props.height}px`};
+`;
 
 const ZoomContainer = styled.div`
   position: absolute;
@@ -350,11 +367,6 @@ const scaleUp = (startY, endY, left, scale) => keyframes`
 `
 
 const Image = styled.div`
-  user-select: none;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
   width: 80%;
   height: 90%;
   display: flex;
@@ -366,7 +378,6 @@ const Image = styled.div`
     max-width: 100%;
     max-height: 100%;
     height: auto;
-    cursor: none;
   }
 
   @media (max-width: 750px) {
