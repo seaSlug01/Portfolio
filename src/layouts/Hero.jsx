@@ -1,20 +1,22 @@
-import React from 'react'
-import {useDispatch, useSelector} from "react-redux";
-import styled from "styled-components";
-import Wheel from "./Wheel";
-import Slider from "../components/Slider";
-import ProjectPreview from '../components/ProjectPreview';
-import SubmitButton from "../components/SubmitButton";
-import { togglePortal } from '../store/portalSlice';
-import {BsFillPeopleFill} from "react-icons/bs";
-import Accordion from './Accordion';
-import HorizontalRule from '../components/HorizontalRule';
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
+import styled from "styled-components"
+import Wheel from "./Wheel"
+import Slider from "../components/Slider"
+import ProjectPreview from "../components/ProjectPreview"
+import SubmitButton from "../components/SubmitButton"
+import { togglePortal } from "../store/portalSlice"
+import { BsFillPeopleFill } from "react-icons/bs"
+import Accordion from "./Accordion"
+import HorizontalRule from "../components/HorizontalRule"
 
 function Hero() {
-  const dispatch = useDispatch();
-  const mediaSize = useSelector(state => state.mediaQuerySize.mediaSize)
-  const projects = useSelector(state => state.projects.projectsData.slice(0, 3))
-  const theme = useSelector(state => state.theme.mode);
+  const dispatch = useDispatch()
+  const mediaSize = useSelector((state) => state.mediaQuerySize.mediaSize)
+  const projects = useSelector((state) =>
+    state.projects.projectsData.slice(0, 3)
+  )
+  const theme = useSelector((state) => state.theme.mode)
 
   return (
     <>
@@ -24,33 +26,51 @@ function Hero() {
             <Title theme={theme}>
               <h1 className="">Neelixmans Area</h1>
             </Title>
-            <p>Hi, I'm Neelix, a web developer enthousiast.</p>
-            <p>This website is a representation of some of my works. Feel free to browse.</p>
-            <SubmitButton text="Contact" className="btn-contact" icon={<BsFillPeopleFill />} onClick={() => dispatch(togglePortal({show: true, component: "Contact"}))} />
+            <p>
+              I'm a web development <span>enthusiast</span>, bringing genuine
+              love for coding and design to create functional and{" "}
+              <span>visually pleasing</span> websites. <br />
+              Feel free to browse! 🚀
+            </p>
+            <SubmitButton
+              text="Contact"
+              className="btn-contact"
+              icon={<BsFillPeopleFill />}
+              onClick={() =>
+                dispatch(togglePortal({ show: true, component: "Contact" }))
+              }
+            />
           </Block>
         </Square>
         <Square className={theme === "dark" ? "dark" : "light"}>
-          {mediaSize < 4 ? 
+          {mediaSize < 4 ? (
             <>
               <Slider />
-              {projects.map((p, idx) => (<ProjectPreview className={`preview-${idx}`} key={p.id} project={p} theme={theme} />))}
+              {projects.map((p, idx) => (
+                <ProjectPreview
+                  className={`preview-${idx}`}
+                  key={p.id}
+                  project={p}
+                  theme={theme}
+                />
+              ))}
             </>
-          : <Wheel />}
+          ) : (
+            <Wheel />
+          )}
         </Square>
       </Section>
-      {
-        mediaSize >= 4 && (
-          <>
-            <div className="m-block m-block--5">
-              <Slider />
-            </div>
-            <div className="responsive-padding d-flex justify-center align-center">
-              <HorizontalRule theme={theme} />
-            </div>
-            <Accordion header="Projects" />
-          </>
-        )
-      }
+      {mediaSize >= 4 && (
+        <>
+          <div className="m-block m-block--5">
+            <Slider />
+          </div>
+          <div className="responsive-padding d-flex justify-center align-center">
+            <HorizontalRule theme={theme} />
+          </div>
+          <Accordion header="Projects" />
+        </>
+      )}
     </>
   )
 }
@@ -63,7 +83,7 @@ const Title = styled.div`
 
   h1 {
     font-size: 4.5rem;
-    color: ${props => props.theme === "dark" ? "#f3f3f3" : "black"};
+    color: ${(props) => (props.theme === "dark" ? "#f3f3f3" : "black")};
     margin-bottom: 1rem;
     letter-spacing: 3px;
     font-weight: 300;
@@ -80,11 +100,10 @@ const Title = styled.div`
     mix-blend-mode: darken;
     transform: translateY(80%);
     transition: 1s ease transform;
-    display: ${props => props.theme === "dark" ? "block" : "none"};
+    display: ${(props) => (props.theme === "dark" ? "block" : "none")};
   }
 
   @media (max-width: 1488px) {
-    
     h1 {
       color: #f3f3f3;
       font-size: 4.5vw;
@@ -97,7 +116,7 @@ const Title = styled.div`
       font-size: 2rem;
     }
   }
-`;
+`
 
 const Block = styled.div`
   width: 75%;
@@ -111,15 +130,23 @@ const Block = styled.div`
   }
 
   p {
-    color: ${props => props.theme === "dark" ? "rgb(227 227 227)" : "#4c4c4c"};
-    font-weight: ${props => props.theme === "dark" ? "400" : "500"};
+    color: ${(props) =>
+      props.theme === "dark" ? "rgb(227 227 227)" : "#4c4c4c"};
+    font-weight: ${(props) => (props.theme === "dark" ? "100" : "400")};
+    font-size: 1.2rem;
 
     &:first-of-type {
       line-height: 2;
     }
 
     span {
-      display: block;
+      color: ${(props) =>
+        props.theme === "dark"
+          ? "rgb(148, 173, 255)"
+          : ["rgb(244 64 255)", "rgb(255 41 247)", "rgb(255 101 64)"][
+              Math.round(Math.random() * 2)
+            ]};
+      font-weight: ${(props) => (props.theme === "dark" ? "400" : "500")};
     }
   }
 
@@ -127,9 +154,11 @@ const Block = styled.div`
     margin-top: 3rem;
     width: 50%;
     text-transform: uppercase;
-    background: ${props => props.theme === "dark" ? "#e6e6e6" : "black"};
-    box-shadow: ${props => props.theme === "dark" ? "#2px 10px 40px #646464" : "0 10px 40px #ababab"};
-    
+    background: ${(props) => (props.theme === "dark" ? "#e6e6e6" : "black")};
+    box-shadow: ${(props) =>
+      props.theme === "dark"
+        ? "#2px 10px 40px #646464"
+        : "0 10px 40px #ababab"};
 
     span {
       mix-blend-mode: difference;
@@ -138,18 +167,20 @@ const Block = styled.div`
     }
 
     &:hover {
-      background: ${props => props.theme === "dark" ? "#eeeeee" : "black"};
+      background: ${(props) => (props.theme === "dark" ? "#eeeeee" : "black")};
     }
 
     &::after {
-      background: ${props => props.theme === "dark" ? "#181818" : "#cbd3ff"};
+      background: ${(props) =>
+        props.theme === "dark" ? "#181818" : "#cbd3ff"};
     }
   }
 
   @media (max-width: 1488px) {
     margin-top: 4vw;
 
-    p, .btn-contact { 
+    p,
+    .btn-contact {
       font-size: 0.9375rem;
     }
 
@@ -182,10 +213,7 @@ const Block = styled.div`
       width: 9rem;
     }
   }
-
-
-  
-`;
+`
 
 const Square = styled.div`
   display: flex;
@@ -193,7 +221,6 @@ const Square = styled.div`
   width: 50%;
   overflow: hidden;
 
-  
   &:nth-of-type(1) {
     padding-left: 10rem;
     align-items: center;
@@ -204,7 +231,8 @@ const Square = styled.div`
       height: 60vh;
       align-items: center;
       justify-content: center;
-      background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${props => props.backgroundImage});
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url(${(props) => props.backgroundImage});
       background-attachment: fixed;
       height: 42vw;
 
@@ -222,36 +250,43 @@ const Square = styled.div`
     @media (max-width: 850px) {
       height: 50vh;
     }
-    
   }
 
   &:nth-of-type(2) {
     align-items: center;
 
     &.dark {
-      &::after, &::before {
-        background-image: linear-gradient( to bottom, rgba(50, 50, 50, 0) 0,
-        rgba(50, 50, 50, 0.15) 15%,
-        rgba(50, 50, 50, 0.65) 29%,
-        rgba(50, 50, 50, 0.78) 44%,
-        rgba(50, 50, 50, 0.9) 44%,
-        rgba(50, 50, 50, 1) 100% );
+      &::after,
+      &::before {
+        background-image: linear-gradient(
+          to bottom,
+          rgba(50, 50, 50, 0) 0,
+          rgba(50, 50, 50, 0.15) 15%,
+          rgba(50, 50, 50, 0.65) 29%,
+          rgba(50, 50, 50, 0.78) 44%,
+          rgba(50, 50, 50, 0.9) 44%,
+          rgba(50, 50, 50, 1) 100%
+        );
       }
     }
 
     &.light {
-      &::after, &::before {
-        background-image: linear-gradient( to bottom, rgba(50, 50, 50, 0) 0,
-        rgba(249, 249, 249, 0.35) 15%,
-        rgba(249, 249, 249, 0.65) 29%,
-        rgba(249, 249, 249, 0.78) 44%,
-        rgba(249, 249, 249, 0.9) 44%,
-        rgba(249, 249, 249, 1) 100% );
+      &::after,
+      &::before {
+        background-image: linear-gradient(
+          to bottom,
+          rgba(50, 50, 50, 0) 0,
+          rgba(249, 249, 249, 0.35) 15%,
+          rgba(249, 249, 249, 0.65) 29%,
+          rgba(249, 249, 249, 0.78) 44%,
+          rgba(249, 249, 249, 0.9) 44%,
+          rgba(249, 249, 249, 1) 100%
+        );
       }
     }
 
-
-    &::after, &::before {
+    &::after,
+    &::before {
       content: "";
       width: 100%;
       height: 3rem;
@@ -263,21 +298,29 @@ const Square = styled.div`
       bottom: 0;
     }
 
-
     &::after {
       transform: rotate(180deg);
       top: 0;
     }
 
     @media (max-width: 1800px) {
-      &::after, &::before {
-        background: linear-gradient(rgba(50, 50, 50, 0) 0px, rgba(50, 50, 50, 0.5) 15%, rgba(50, 50, 50, 0.5) 29%, rgba(50, 50, 50, 1) 44%, rgba(50, 50, 50, 1) 44%, rgb(50, 50, 50) 100%);
+      &::after,
+      &::before {
+        background: linear-gradient(
+          rgba(50, 50, 50, 0) 0px,
+          rgba(50, 50, 50, 0.5) 15%,
+          rgba(50, 50, 50, 0.5) 29%,
+          rgba(50, 50, 50, 1) 44%,
+          rgba(50, 50, 50, 1) 44%,
+          rgb(50, 50, 50) 100%
+        );
         height: 8rem;
       }
     }
 
     @media (max-width: 1600px) {
-      &::after, &::before {
+      &::after,
+      &::before {
         height: 13rem;
       }
     }
@@ -287,7 +330,8 @@ const Square = styled.div`
       flex-direction: column;
       align-items: flex-start;
 
-      &::after, &::before {
+      &::after,
+      &::before {
         height: 0;
       }
 
@@ -296,7 +340,7 @@ const Square = styled.div`
       }
     }
   }
-`;
+`
 
 const Section = styled.div`
   display: flex;
@@ -312,5 +356,4 @@ const Section = styled.div`
       width: 100%;
     }
   }
-`;
-
+`
