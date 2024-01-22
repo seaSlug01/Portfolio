@@ -115,7 +115,7 @@ function Wheel() {
     }
   }
 
-  useInterval(rotateWheel, "wheel", 5000)
+  useInterval(rotateWheel, "wheel", 50000)
 
   useEffect(() => {
     const visibilityChange = function () {
@@ -127,6 +127,14 @@ function Wheel() {
 
     return () => {
       document.removeEventListener("visibilitychange", visibilityChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    setWheelColor(items[0].heading.color)
+
+    return () => {
+      setWheelColor(items[0].heading.color)
     }
   }, [])
 

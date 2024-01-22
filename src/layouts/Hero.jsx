@@ -134,6 +134,10 @@ const SubHeader = styled.p`
     line-height: 2;
   }
 
+  small {
+    font-size: 0.8rem;
+  }
+
   span {
     transition: color 0.5s ease;
     color: ${(props) => props.spanColor};

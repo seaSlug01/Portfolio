@@ -1,38 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react'
-import {Link} from "react-router-dom";
-import styled from "styled-components";
-import Logo from "../components/Logo.jsx";
-import Burger from '../components/Burger';
-import NavLinkArea from './NavLinkArea';
-import throttle from 'lodash.throttle';
-import Toggler from '../components/Toggler.jsx';
+import React, { useState, useEffect, useRef } from "react"
+import { Link } from "react-router-dom"
+import styled from "styled-components"
+import Logo from "../components/Logo.jsx"
+import Burger from "../components/Burger"
+import NavLinkArea from "./NavLinkArea"
+import throttle from "lodash.throttle"
+import Toggler from "../components/Toggler.jsx"
 
-function Header({theme}) {
-  const [navLinks, setNavLinks] = useState(false);
-  const [navLine, setNavLine] = useState(true);
-  const burgerRef = useRef(null);
-  const toggleNavLinks = () => setNavLinks(!navLinks);
+function Header({ theme }) {
+  const [navLinks, setNavLinks] = useState(false)
+  const [navLine, setNavLine] = useState(true)
+  const burgerRef = useRef(null)
+  const toggleNavLinks = () => setNavLinks(!navLinks)
 
   useEffect(() => {
-    const clickHandler = window.addEventListener("click", hideNavLinks);
+    const clickHandler = window.addEventListener("click", hideNavLinks)
 
     return () => window.removeEventListener("click", clickHandler)
   }, [])
 
   useEffect(() => {
     const scrollHandler = throttle(() => {
-      const showNavLine = window.scrollY < 50;
+      const showNavLine = window.scrollY < 50
       setNavLine(showNavLine)
       setNavLinks(false)
     }, 250)
 
     window.addEventListener("scroll", scrollHandler)
 
-     return () => window.removeEventListener("scroll", scrollHandler)
+    return () => window.removeEventListener("scroll", scrollHandler)
   }, [])
 
   const hideNavLinks = (e) => {
-    if(e.target !== burgerRef.current) {
+    if (e.target !== burgerRef.current) {
       setNavLinks(false)
     }
   }
@@ -46,7 +46,11 @@ function Header({theme}) {
         <NavLinkArea visible={navLinks} theme={theme} />
         <NavActions>
           <Toggler />
-          <Burger toggleNavLinks={toggleNavLinks} active={navLinks} ref={burgerRef} />
+          <Burger
+            toggleNavLinks={toggleNavLinks}
+            active={navLinks}
+            ref={burgerRef}
+          />
         </NavActions>
       </HeaderMain>
     </>
@@ -62,7 +66,7 @@ const NavActions = styled.div`
   @media (max-width: 550px) {
     gap: 1.5rem;
   }
-`;
+`
 
 const HeaderMain = styled.div`
   width: 100%;
@@ -75,7 +79,10 @@ const HeaderMain = styled.div`
   top: 0;
   left: 0;
   z-index: 100;
-  background: ${props => props.theme === "dark" ? "rgba(50, 50, 50, 0.5)" : "rgba(249, 249, 249, 0.65)"};
+  background: ${(props) =>
+    props.theme === "dark"
+      ? "rgba(50, 50, 50, 0.5)"
+      : "rgba(249, 249, 249, 0.65)"};
   backdrop-filter: blur(5px);
 
   &::after {
@@ -85,7 +92,8 @@ const HeaderMain = styled.div`
     position: absolute;
     left: 50%;
     bottom: 0px;
-    transform: translateX(-50%) ${props => props.navLine ? 'scaleX(0)' : 'scaleX(1)'};
+    transform: translateX(-50%)
+      ${(props) => (props.navLine ? "scaleX(0)" : "scaleX(1)")};
     border-bottom: thin solid rgb(133, 133, 133);
     background: transparent;
     z-index: -1;
@@ -93,18 +101,8 @@ const HeaderMain = styled.div`
   }
 
   .logo {
-    
-
     svg {
       width: 9rem;
-
-      g:nth-of-type(1) {
-        fill: ${props => props.theme === "dark" ? "#8bdbf5" : "rgb(58 108 163)"};
-      }
-
-      g:nth-of-type(2) {
-        fill: ${props => props.theme === "dark" ? "#f3f3f3" : "#404040"};
-      }
     }
   }
 
@@ -114,7 +112,6 @@ const HeaderMain = styled.div`
     &::after {
       width: calc(100% - 16vw);
     }
-    
   }
 
   @media (max-width: 950px) {
