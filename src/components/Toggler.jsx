@@ -1,33 +1,43 @@
-import React from 'react'
-import {useDispatch, useSelector} from "react-redux";
-import styled, {keyframes} from "styled-components";
-import {HiOutlineSun} from "react-icons/hi";
-import {HiOutlineMoon} from "react-icons/hi";
-import { setTheme } from '../store/themeSlice';
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
+import styled, { keyframes } from "styled-components"
+import { HiOutlineSun } from "react-icons/hi"
+import { HiOutlineMoon } from "react-icons/hi"
+import { setTheme } from "../store/themeSlice"
 
 function Toggler() {
-  const theme = useSelector(state => state.theme);
+  const theme = useSelector((state) => state.theme)
   const dispatch = useDispatch()
 
   return (
-    <Button onClick={() => {
-      const newMode = theme.mode === "light" ? "dark" : "light";
-      dispatch(setTheme({
-        mode: newMode,
-        prev: theme.mode
-      }))
+    <Button
+      onClick={() => {
+        const newMode = theme.mode === "light" ? "dark" : "light"
+        dispatch(
+          setTheme({
+            mode: newMode,
+            prev: theme.mode,
+          })
+        )
 
-      localStorage.setItem("theme", newMode);
-    }}>
+        localStorage.setItem("theme", newMode)
+      }}
+    >
+      <SvgWrapper
+        mode={theme.mode}
+        prevMode={theme.prev}
+        className={`switchTo--light ${theme.prev ? "animate" : undefined}`}
+      >
+        <HiOutlineMoon />
+      </SvgWrapper>
 
-        <SvgWrapper mode={theme.mode} prevMode={theme.prev} className={`switchTo--light ${theme.prev ? "animate" : undefined}`}>
-          <HiOutlineMoon />
-        </SvgWrapper>
-
-        <SvgWrapper mode={theme.mode} prevMode={theme.prev} className={`switchTo--dark ${theme.prev ? "animate" : undefined}`}>
-          <HiOutlineSun />
-        </SvgWrapper>
-
+      <SvgWrapper
+        mode={theme.mode}
+        prevMode={theme.prev}
+        className={`switchTo--dark ${theme.prev ? "animate" : undefined}`}
+      >
+        <HiOutlineSun />
+      </SvgWrapper>
     </Button>
   )
 }
@@ -56,13 +66,14 @@ const SvgWrapper = styled.div`
   mix-blend-mode: difference;
 
   &.switchTo {
-
     &--light {
-      opacity: ${props => props.mode === "light" ? 1 : 0};
+      opacity: ${(props) => (props.mode === "light" ? 1 : 0)};
       font-size: 2.1rem;
 
       &.animate {
-        animation: ${props => props.prevMode === "dark" ? rotateTo(90, 0) : rotateTo(0, 90)} 0.5s ease forwards;
+        animation: ${(props) =>
+            props.prevMode === "dark" ? rotateTo(90, 0) : rotateTo(0, 90)}
+          0.5s ease forwards;
       }
 
       svg {
@@ -75,25 +86,24 @@ const SvgWrapper = styled.div`
     }
 
     &--dark {
-      opacity: ${props => props.mode === "dark" ? 1 : 0};
+      opacity: ${(props) => (props.mode === "dark" ? 1 : 0)};
       font-size: 2rem;
 
       &.animate {
-        animation: ${props => props.prevMode === "light" ? rotateTo(-90, 0) : rotateTo(0 , -90)} 0.5s ease forwards;
+        animation: ${(props) =>
+            props.prevMode === "light" ? rotateTo(-90, 0) : rotateTo(0, -90)}
+          0.5s ease forwards;
       }
 
       svg {
         color: #d8d8d8;
       }
     }
-    
   }
-
-
-`;
+`
 
 const Button = styled.button`
   width: 2.5rem;
   height: 2.2rem;
   position: relative;
-`;
+`

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import Wheel from "./Wheel"
@@ -9,14 +9,16 @@ import { togglePortal } from "../store/portalSlice"
 import { BsFillPeopleFill } from "react-icons/bs"
 import Accordion from "./Accordion"
 import HorizontalRule from "../components/HorizontalRule"
+import { WheelContext } from "../context/Wheel"
 
 function Hero() {
+  const theme = useSelector((state) => state.theme.mode)
   const dispatch = useDispatch()
+  const { color: wheelColor } = useContext(WheelContext)
   const mediaSize = useSelector((state) => state.mediaQuerySize.mediaSize)
   const projects = useSelector((state) =>
     state.projects.projectsData.slice(0, 3)
   )
-  const theme = useSelector((state) => state.theme.mode)
 
   return (
     <>
@@ -26,12 +28,12 @@ function Hero() {
             <Title theme={theme}>
               <h1 className="">Neelixmans Area</h1>
             </Title>
-            <p>
+            <SubHeader theme={theme} spanColor={wheelColor.code}>
               I'm a web development <span>enthusiast</span>, bringing genuine
               love for coding and design to create functional and{" "}
               <span>visually pleasing</span> websites. <br />
               Feel free to browse! 🚀
-            </p>
+            </SubHeader>
             <SubmitButton
               text="Contact"
               className="btn-contact"
@@ -118,6 +120,23 @@ const Title = styled.div`
   }
 `
 
+const SubHeader = styled.p`
+  color: ${(props) =>
+    props.theme === "dark" ? "rgb(227 227 227)" : "#4c4c4c"};
+  font-weight: ${(props) => (props.theme === "dark" ? "100" : "400")};
+  font-size: 1.2rem;
+
+  &:first-of-type {
+    line-height: 2;
+  }
+
+  span {
+    transition: color 0.5s ease;
+    color: ${(props) => props.spanColor};
+    font-weight: ${(props) => (props.theme === "dark" ? "400" : "500")};
+  }
+`
+
 const Block = styled.div`
   width: 75%;
 
@@ -126,27 +145,6 @@ const Block = styled.div`
       &::after {
         transform: translateY(0%);
       }
-    }
-  }
-
-  p {
-    color: ${(props) =>
-      props.theme === "dark" ? "rgb(227 227 227)" : "#4c4c4c"};
-    font-weight: ${(props) => (props.theme === "dark" ? "100" : "400")};
-    font-size: 1.2rem;
-
-    &:first-of-type {
-      line-height: 2;
-    }
-
-    span {
-      color: ${(props) =>
-        props.theme === "dark"
-          ? "rgb(148, 173, 255)"
-          : ["rgb(244 64 255)", "rgb(255 41 247)", "rgb(255 101 64)"][
-              Math.round(Math.random() * 2)
-            ]};
-      font-weight: ${(props) => (props.theme === "dark" ? "400" : "500")};
     }
   }
 
