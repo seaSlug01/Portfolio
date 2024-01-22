@@ -10,6 +10,7 @@ import { BsFillPeopleFill } from "react-icons/bs"
 import Accordion from "./Accordion"
 import HorizontalRule from "../components/HorizontalRule"
 import { WheelContext } from "../context/Wheel"
+import { heroHeaderShade, heroSubHeadingColors } from "../styles/colors"
 
 function Hero() {
   const theme = useSelector((state) => state.theme.mode)
@@ -25,14 +26,17 @@ function Hero() {
       <Section>
         <Square backgroundImage="/assets/3-small.jpg">
           <Block theme={theme}>
-            <Title theme={theme}>
+            <Title theme={theme} shadeBG={heroHeaderShade[wheelColor]}>
               <h1 className="">Neelixmans Area</h1>
             </Title>
-            <SubHeader theme={theme} spanColor={wheelColor.code}>
+            <SubHeader
+              theme={theme}
+              spanColor={heroSubHeadingColors[theme][wheelColor]}
+            >
               I'm a web development <span>enthusiast</span>, bringing genuine
               love for coding and design to create functional and{" "}
               <span>visually pleasing</span> websites. <br />
-              Feel free to browse! 🚀
+              Feel free to browse! ✨
             </SubHeader>
             <SubmitButton
               text="Contact"
@@ -98,10 +102,10 @@ const Title = styled.div`
     height: 100%;
     top: 0;
     left: 0px;
-    background: #94adff;
+    background: ${(props) => props.shadeBG};
     mix-blend-mode: darken;
     transform: translateY(80%);
-    transition: 1s ease transform;
+    transition: 1s ease transform, 0.5s ease color;
     display: ${(props) => (props.theme === "dark" ? "block" : "none")};
   }
 

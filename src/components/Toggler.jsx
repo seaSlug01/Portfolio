@@ -1,11 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled, { keyframes } from "styled-components"
 import { HiOutlineSun } from "react-icons/hi"
 import { HiOutlineMoon } from "react-icons/hi"
 import { setTheme } from "../store/themeSlice"
+import { WheelContext } from "../context/Wheel"
 
 function Toggler() {
+  const { color: wheelColor, setColor: setWheelColor } =
+    useContext(WheelContext)
   const theme = useSelector((state) => state.theme)
   const dispatch = useDispatch()
 
@@ -20,6 +23,7 @@ function Toggler() {
           })
         )
 
+        setWheelColor(wheelColor)
         localStorage.setItem("theme", newMode)
       }}
     >
