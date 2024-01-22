@@ -115,7 +115,7 @@ function Wheel() {
     }
   }
 
-  useInterval(rotateWheel, "wheel", 50000)
+  useInterval(rotateWheel, "wheel", 6000)
 
   useEffect(() => {
     const visibilityChange = function () {
