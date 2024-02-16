@@ -2,6 +2,9 @@ const imgPath = (image) => {
   return `${window.location.origin}/assets/${image}`
 }
 
+export const heroVideoPathMp4 = imgPath("Aerialviewofsandbeach.mp4")
+export const heroVideoPathWebP = imgPath("Aerialviewofsandbeach.webp")
+
 export const projects = [
   {
     id: 1,

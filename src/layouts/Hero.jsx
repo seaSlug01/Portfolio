@@ -11,6 +11,7 @@ import Accordion from "./Accordion"
 import HorizontalRule from "../components/HorizontalRule"
 import { WheelContext } from "../context/Wheel"
 import { heroHeaderShade, heroSubHeadingColors } from "../styles/colors"
+import { heroVideoPathWebP, heroVideoPathMp4 } from "../db"
 
 function Hero() {
   const theme = useSelector((state) => state.theme.mode)
@@ -24,7 +25,17 @@ function Hero() {
   return (
     <>
       <Section>
-        <Square backgroundImage="/assets/3-small.jpg">
+        <Square>
+          {mediaSize < 4 ? (
+            <HeroVideo clasName="heroasdvideo">
+              <video muted autoPlay loop>
+                <source src={heroVideoPathWebP} type="video/webp" />
+                <source src={heroVideoPathMp4} type="video/mp4" />
+              </video>
+            </HeroVideo>
+          ) : (
+            ""
+          )}
           <Block theme={theme}>
             <Title theme={theme} shadeBG={heroHeaderShade[wheelColor]}>
               <h1 className="">Neelixmans Area</h1>
@@ -83,6 +94,31 @@ function Hero() {
 
 export default Hero
 
+const HeroVideo = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+`
+
 const Title = styled.div`
   position: relative;
   overflow: hidden;
@@ -129,6 +165,7 @@ const SubHeader = styled.p`
     props.theme === "dark" ? "rgb(227 227 227)" : "#4c4c4c"};
   font-weight: ${(props) => (props.theme === "dark" ? "100" : "400")};
   font-size: 1.2rem;
+  z-index: 1;
 
   &:first-of-type {
     line-height: 2;
