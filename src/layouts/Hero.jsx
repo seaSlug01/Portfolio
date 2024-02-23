@@ -42,6 +42,7 @@ function Hero() {
             </Title>
             <SubHeader
               theme={theme}
+              mediaSize={mediaSize}
               spanColor={
                 heroSubHeadingColors[mediaSize < 4 ? "dark" : theme][
                   mediaSize < 4 ? "blue" : wheelColor
@@ -182,7 +183,8 @@ const SubHeader = styled.p`
   span {
     transition: color 0.5s ease;
     color: ${(props) => props.spanColor};
-    font-weight: ${(props) => (props.theme === "dark" ? "400" : "500")};
+    font-weight: ${(props) =>
+      props.theme === "dark" ? "400" : props.mediaSize < 4 ? "400" : "500"};
   }
 `
 
