@@ -42,7 +42,11 @@ function Hero() {
             </Title>
             <SubHeader
               theme={theme}
-              spanColor={heroSubHeadingColors[theme][wheelColor]}
+              spanColor={
+                heroSubHeadingColors[mediaSize < 4 ? "dark" : theme][
+                  mediaSize < 4 ? "blue" : wheelColor
+                ]
+              }
             >
               I'm a web development <span>enthusiast</span>, bringing genuine
               love for coding and design to create functional and{" "}
